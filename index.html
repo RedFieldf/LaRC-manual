@@ -257,7 +257,7 @@
                 <div class="recipe-title">溶液や備品の発注方法</div>
                 <div class="note-box">
                     <span class="note-title">連絡先</span>
-                    金子研グループラインにて、以下の形式で連絡してください。<br>
+                    金子研グループLINEにて、下記の形式で連絡してください。<br>
                     誰でも気軽に連絡してOKです！
                 </div>
                 <div class="recipe-subtitle">メッセージのテンプレート</div>
@@ -265,8 +265,8 @@
 【見積もり依頼】
 ・スタンダードチップ -1000μl　バルク(1000本入), 111Q, QSP製, 2袋</div>
                 <div class="step-sub">
-                    上記をコピーして、商品名や個数を書き換えて送信してください。<br>
-                    <strong>ポイント：</strong>見積依頼担当をメンション ＋ 【見積もり依頼】 ＋ 詳細情報
+                    上記をコピーして、商品名や発注数を書き換えて送信してください。<br>
+                    <strong>型：<br>・見積依頼担当をメンション<br>・【見積もり依頼】<br>・発注を希望するものの情報</strong>
                 </div>
             </div>
         </div>
@@ -275,12 +275,12 @@
             <button class="back-btn" onclick="showPage('p-order')"><i class="fa-solid fa-arrow-left"></i> 発注/受取へ戻る</button>
             <div class="section-card">
                 <div class="recipe-title">卵の受取・孵卵器投入</div>
-                <div class="note-box"><span class="note-title">実施日時</span>毎週火曜日 11:00 ごろ<br>翌週使用分の卵を投入します。</div>
+                <div class="note-box"><span class="note-title">実施日時</span>毎週月曜日 11:00 ごろ<br>翌週使用分の卵を投入します。</div>
                 <ol class="step-list">
-                    <li><span class="step-txt">学務課へ受取に行く</span><div class="step-sub">入口はケヤキ門側の外から入る場所を使用。</div></li>
+                    <li><span class="step-txt">学務課へ受取に行く</span><div class="step-sub">入口はケヤキ門側の外から入る。<br>学務課が閉室している日は、9時過ぎごろに配達員さんから直接受け取ります。</div></li>
                     <li><span class="step-txt">開封・検品</span><div class="step-sub">破損がないか 1 個 1 個 確認。</div></li>
-                    <li><span class="step-txt">書き込み</span><div class="step-sub">良品に日付と番号を記入。</div></li>
-                    <li><span class="step-txt">計測・記録</span></li>
+                    <li><span class="step-txt">卵に書き込み</span><div class="step-sub">良品に日付と番号を記入。</div></li>
+                    <li><span class="step-txt">記録</span><div class="step-sub">印刷された紙の「孵卵器管理シート」に書かれた項目に沿って記録。<br>シートが切れた場合は印刷しましょう。</div></li>
                 </ol>
                 <div style="text-align: center; margin-top: 30px;">
                     <a href="https://drive.google.com/file/d/1zkmnv6RSpbHlguUltFS8ippLsHmUvNft/view?usp=sharing" target="_blank" class="btn-go"><i class="fa-solid fa-file-pdf"></i> 孵卵器管理シート</a>
@@ -1175,17 +1175,17 @@
         const guideData = {
             'laser-plus': {
                 title: 'レーザー有 MEA予約',
-                text: '【予約時のルール】<br>・氏名、開始時間、終了時間を必ず記入してください。<br>・使用後は次の方のために清掃を行ってください。<br>・長時間の占有は避けましょう。',
+                text: '【予約時のルール】<br>・実験予定が決まり次第、早めに記入してください。<br>・変更がある場合は速やかに修正してください。<br>・開始10分後になっても予約者が現れなかった場合、その場にいる人が使ってOKです。',
                 url: 'https://docs.google.com/spreadsheets/d/1Iyykb4FtFrtAHlmcRj6RP0GcYoREeRO3rP8sFW_IRXU/edit?gid=1932456055#gid=1932456055'
             },
             'laser-minus': {
                 title: 'レーザー無 MEA予約',
-                text: '【予約時のルール】<br>・実験予定が決まり次第、早めに記入してください。<br>・変更がある場合は速やかに修正してください。<br>・トラブル時は管理者に連絡すること。',
+                text: '【予約時のルール】<br>・実験予定が決まり次第、早めに記入してください。<br>・変更がある場合は速やかに修正してください。<br>・開始10分後になっても予約者が現れなかった場合、その場にいる人が使ってOKです。',
                 url: 'https://docs.google.com/spreadsheets/d/1Iyykb4FtFrtAHlmcRj6RP0GcYoREeRO3rP8sFW_IRXU/edit?gid=202336514#gid=202336514'
             },
             'reagent-duty': {
                 title: '試薬調製担当',
-                text: '【当番の方へ】<br>・在庫切れがないか確認してください。<br>・調製後はラベルに日付と作成者を記入してください。<br>・足りない試薬があれば発注リストに追加してください。',
+                text: '【当番の方へ】<br>・在庫切れがないか確認してください。<br>・調製後はラベルに試薬名・日付・作成者を記入してください。<br>・足りない試薬があれば発注してください。',
                 url: 'https://docs.google.com/spreadsheets/d/1Iyykb4FtFrtAHlmcRj6RP0GcYoREeRO3rP8sFW_IRXU/edit?gid=1085389326#gid=1085389326'
             }
         };
@@ -1204,3 +1204,4 @@
 
 </body>
 </html>
+
