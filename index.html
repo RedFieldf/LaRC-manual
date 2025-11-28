@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>細胞班マニュアル</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- デザイン設定 (CSS) --- */
+        body { font-family: "Helvetica Neue", Arial, sans-serif; background-color: #f0f2f5; margin: 0; padding: 0; color: #333; }
+        
+        /* ヘッダー */
+        header { background: #2c3e50; color: white; padding: 15px; text-align: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        header h1 { margin: 0; font-size: 1.2rem; }
+        
+        /* 画面のコンテナ */
+        .container { max-width: 900px; margin: 20px auto; padding: 0 15px; }
+
+        /* ページ切り替えの仕組み */
+        .page { display: none; animation: fadeIn 0.3s; }
+        .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* カードとセクション */
+        .section-card { background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .cat-title { font-size: 1.1em; border-bottom: 2px solid #ddd; padding-bottom: 8px; margin-bottom: 15px; font-weight: bold; }
+
+        /* --- レシピ風詳細ページのデザイン --- */
+        .recipe-title { font-size: 1.4rem; color: #2c3e50; border-bottom: 3px solid #27ae60; padding-bottom: 10px; margin-bottom: 20px; font-weight: bold; }
+        .recipe-subtitle { font-size: 1.1rem; color: #555; border-left: 4px solid #27ae60; padding-left: 10px; margin-top: 30px; margin-bottom: 15px; font-weight: bold; }
+        
+        /* 手順リスト */
+        .step-list { counter-reset: step; list-style: none; padding: 0; }
+        .step-list > li { position: relative; padding-left: 40px; margin-bottom: 20px; }
+        .step-list > li::before {
+            content: counter(step); counter-increment: step;
+            position: absolute; left: 0; top: 0;
+            width: 30px; height: 30px; background: #27ae60; color: white;
+            border-radius: 50%; text-align: center; line-height: 30px; font-weight: bold;
+        }
+        .step-txt { font-weight: bold; display: block; margin-bottom: 5px; font-size: 1.05rem; }
+        .step-sub { font-size: 0.9rem; color: #666; line-height: 1.5; }
+
+        /* ポイント・注意枠 */
+        .note-box { background: #fff8e1; border-left: 5px solid #ffc107; padding: 15px; margin: 20px 0; border-radius: 4px; }
+        .note-title { font-weight: bold; color: #d35400; margin-bottom: 5px; display: block; }
+        .note-box ul { list-style-type: disc; padding-left: 20px; margin: 5px 0 0 0; }
+        .note-box ul li { list-style-type: disc; padding-left: 0; margin-bottom: 5px; }
+
+        /* 危険・警告枠 (赤) */
+        .warning-box { background: #fdedec; border-left: 5px solid #c0392b; padding: 15px; margin: 20px 0; border-radius: 4px; color: #c0392b; }
+        .warning-title { font-weight: bold; margin-bottom: 5px; display: block; font-size: 1.1em; }
+
+        /* テンプレート枠（コピー用） */
+        .template-box { background: #e8f0fe; border: 1px solid #b3d7ff; padding: 15px; border-radius: 5px; font-family: monospace; white-space: pre-wrap; margin: 10px 0; color: #333; }
+
+        /* 準備中画面 */
+        .coming-soon { text-align: center; padding: 50px 20px; color: #7f8c8d; }
+        .coming-soon i { font-size: 4rem; margin-bottom: 20px; color: #bdc3c7; }
+        
+        /* --- グリッド設定 --- */
+        .icon-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 15px; }
+
+        /* Type 1: シンプル */
+        .icon-btn-simple {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 15px 10px; border-radius: 10px; text-align: center; cursor: pointer; transition: 0.2s;
+            border: 2px solid transparent; min-height: 90px;
+        }
+        .icon-btn-simple i { font-size: 2rem; display: block; margin-bottom: 10px; }
+        .icon-btn-simple span { font-weight: bold; font-size: 0.9rem; line-height: 1.3; }
+        .icon-btn-simple:hover { transform: translateY(-3px); color: white !important; }
+
+        /* Type 2: 詳細 */
+        .icon-btn-detail {
+            display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+            padding: 15px 10px; border-radius: 10px; text-align: center; cursor: pointer; transition: 0.2s;
+            border: 2px solid transparent; min-height: 110px;
+        }
+        .icon-btn-detail i { font-size: 2rem; display: block; margin-bottom: 10px; margin-top: 5px; }
+        .icon-btn-detail .btn-title { font-weight: bold; font-size: 1rem; display: block; margin-bottom: 5px; line-height: 1.2; }
+        .icon-btn-detail .btn-desc { font-size: 0.75rem; color: #666; font-weight: normal; line-height: 1.3; display: block; }
+        .icon-btn-detail:hover { transform: translateY(-3px); }
+        .icon-btn-detail:hover .btn-desc { color: rgba(255,255,255,0.9); }
+        .icon-btn-detail:hover i, .icon-btn-detail:hover .btn-title { color: white !important; }
+
+        /* Modal */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 999; justify-content: center; align-items: center; }
+        .modal-overlay.active { display: flex; animation: fadeIn 0.2s; }
+        .modal-box { background: white; padding: 30px; border-radius: 12px; max-width: 90%; width: 400px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); text-align: center; }
+        .modal-title { font-size: 1.2rem; font-weight: bold; color: #2c3e50; margin-bottom: 15px; }
+        .modal-text { font-size: 0.95rem; color: #555; margin-bottom: 25px; line-height: 1.6; text-align: left; background: #f9f9f9; padding: 15px; border-radius: 8px; }
+        .modal-actions { display: flex; gap: 10px; justify-content: center; }
+        .btn-cancel { background: #95a5a6; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; }
+        .btn-go { background: #16a085; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; text-decoration: none; }
+        .btn-go:hover { background: #1abc9c; }
+
+        /* Colors */
+        .color-green .cat-title { color: #27ae60; border-color: #27ae60; }
+        .color-green .icon-btn-simple { background: #eef9f0; border-color: #ccebd4; color: #27ae60; }
+        .color-green .icon-btn-simple:hover { background: #27ae60; border-color: #27ae60; }
+        
+        .color-orange .cat-title { color: #e67e22; border-color: #e67e22; }
+        .color-orange .icon-btn-simple { background: #fff8f0; border-color: #ffe0b2; color: #e67e22; }
+        .color-orange .icon-btn-simple:hover { background: #e67e22; border-color: #e67e22; }
+
+        .color-blue .cat-title { color: #2980b9; border-color: #2980b9; }
+        .color-blue .icon-btn-detail { background: #f0f7fb; border-color: #bce0f5; color: #2980b9; }
+        .color-blue .icon-btn-detail:hover { background: #2980b9; border-color: #2980b9; }
+
+        .color-red .cat-title { color: #c0392b; border-color: #c0392b; }
+        .color-red .icon-btn-simple { background: #fdedec; border-color: #fadbd8; color: #c0392b; }
+        .color-red .icon-btn-simple:hover { background: #c0392b; border-color: #c0392b; }
+
+        .color-purple .cat-title { color: #8e44ad; border-color: #8e44ad; }
+        .color-purple .icon-btn-simple { background: #f4ecf7; border-color: #d2b4de; color: #8e44ad; }
+        .color-purple .icon-btn-simple:hover { background: #8e44ad; border-color: #8e44ad; }
+
+        .color-teal .cat-title { color: #16a085; border-color: #16a085; }
+        .color-teal .icon-btn-simple { background: #e8f8f5; border-color: #a3e4d7; color: #16a085; }
+        .color-teal .icon-btn-simple:hover { background: #16a085; border-color: #16a085; }
+
+        /* Lists & Buttons */
+        .menu-list { list-style: none; padding: 0; }
+        .menu-list li { margin-bottom: 10px; }
+        .menu-btn { display: flex; justify-content: space-between; align-items: center; background: #f8f9fa; border: 1px solid #eee; padding: 15px; border-radius: 8px; cursor: pointer; text-decoration: none; color: #333; font-weight: bold; transition: 0.2s; }
+        .menu-btn:hover { background: #e9ecef; border-color: #ddd; padding-left: 20px; }
+        .menu-btn i { color: #ccc; }
+        .back-btn { display: inline-block; background: #95a5a6; color: white; padding: 8px 15px; border-radius: 20px; font-size: 0.9rem; margin-bottom: 15px; cursor: pointer; border: none; }
+        .back-btn:hover { background: #7f8c8d; }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1 id="header-title">細胞班マニュアル</h1>
+    </header>
+
+    <div class="container">
+
+        <div id="p-home" class="page active">
+            <div class="section-card color-green">
+                <div class="cat-title">A. 試薬・物品管理</div>
+                <div class="icon-grid">
+                    <div class="icon-btn-simple" onclick="showPage('p-order')">
+                        <i class="fa-solid fa-cart-shopping"></i><span>発注 / 受取</span>
+                    </div>
+                    <div class="icon-btn-simple" onclick="showPage('p-reagent-list')">
+                        <i class="fa-solid fa-flask"></i><span>調製</span>
+                    </div>
+                </div>
+            </div>
+            <div class="section-card color-orange">
+                <div class="cat-title">B. 実験フロー</div>
+                <div class="icon-grid">
+                    <div class="icon-btn-simple" onclick="showPage('p-exp-seeding')">
+                        <i class="fa-solid fa-seedling"></i><span>播種</span>
+                    </div>
+                    <div class="icon-btn-simple" onclick="showPage('p-exp-measure')">
+                        <i class="fa-solid fa-chart-line"></i><span>培養・計測</span>
+                    </div>
+                    <div class="icon-btn-simple" onclick="showPage('p-exp-cleanup')">
+                        <i class="fa-solid fa-trash"></i><span>片付け</span>
+                    </div>
+                </div>
+            </div>
+            <div class="section-card color-blue">
+                <div class="cat-title">C. 解析・ソフト</div>
+                <div class="icon-grid">
+                    <div class="icon-btn-detail" onclick="window.open('https://github.com/kkito0726/mea-viewer/blob/main/README.md', '_blank')">
+                        <i class="fa-solid fa-display"></i><span class="btn-title">MEA viewer</span><span class="btn-desc">ブラウザ上でデータ確認</span>
+                    </div>
+                    <div class="icon-btn-detail" onclick="window.open('https://github.com/kkito0726/MEA_modules/blob/main/README_ja.md', '_blank')">
+                        <i class="fa-brands fa-python"></i><span class="btn-title">pyMEA</span><span class="btn-desc">MEA計測データの解析</span>
+                    </div>
+                    <div class="icon-btn-detail" onclick="window.open('https://github.com/kkito0726/image-stitcher', '_blank')">
+                        <i class="fa-solid fa-panorama"></i><span class="btn-title">image Stitcher</span><span class="btn-desc">画像統合 (545電極など)</span>
+                    </div>
+                    <div class="icon-btn-detail" onclick="window.open('https://github.com/kkito0726/svg_converter', '_blank')">
+                        <i class="fa-solid fa-bezier-curve"></i><span class="btn-title">SVG Converter</span><span class="btn-desc">Inkscape→RasPi用CSV変換</span>
+                    </div>
+                </div>
+            </div>
+            <div class="section-card color-red">
+                <div class="cat-title">D. 機器・安全</div>
+                <div class="icon-grid">
+                    <div class="icon-btn-simple" onclick="window.open('https://drive.google.com/file/d/1IZRCrm5u0OWGaym-ynC9MuPXzLJDcV-0/view?usp=sharing', '_blank')">
+                        <i class="fa-solid fa-wind"></i><span>クリーンベンチ</span>
+                    </div>
+                    <div class="icon-btn-simple" onclick="showPage('p-gas-burner')"><i class="fa-solid fa-fire"></i><span>ガスバーナー</span></div>
+                    <div class="icon-btn-simple" onclick="showPage('p-coming-soon')"><i class="fa-solid fa-temperature-high"></i><span>インキュベーター</span></div>
+                    <div class="icon-btn-simple" onclick="showPage('p-autoclave')"><i class="fa-solid fa-prescription-bottle"></i><span>オートクレーブ</span></div>
+                    <div class="icon-btn-simple" onclick="showPage('p-coming-soon')"><i class="fa-solid fa-triangle-exclamation"></i><span>コンタミ<br>対応方法</span></div>
+                    <div class="icon-btn-simple" onclick="showPage('p-coming-soon')"><i class="fa-solid fa-door-open"></i><span>退出時の<br>確認事項</span></div>
+                </div>
+            </div>
+            <div class="section-card color-purple">
+                <div class="cat-title">E. 運営・その他</div>
+                <div class="icon-grid">
+                    <div class="icon-btn-simple" onclick="window.open('https://drive.google.com/drive/folders/1m0BESdl_YC1SYJv_bIpISJkM_2YOpVpn?usp=drive_link', '_blank')"><i class="fa-solid fa-book-open-reader"></i><span>LaRC基礎トレ</span></div>
+                    <div class="icon-btn-simple" onclick="showPage('p-admin-ta')"><i class="fa-solid fa-users-gear"></i><span>TA向け資料</span></div>
+                    <div class="icon-btn-simple" onclick="window.open('https://drive.google.com/drive/u/1/folders/1C0MbYu9U5cO83mwuMgYV6aR6Xy5CnsEv', '_blank')"><i class="fa-solid fa-graduation-cap"></i><span>卒論/修論ルール</span></div>
+                </div>
+            </div>
+            <div class="section-card color-teal">
+                <div class="cat-title">F. 予約表</div>
+                <div class="icon-grid">
+                    <div class="icon-btn-simple" onclick="openGuide('laser-plus')"><i class="fa-solid fa-calendar-check"></i><span>レーザー有 MEA</span></div>
+                    <div class="icon-btn-simple" onclick="openGuide('laser-minus')"><i class="fa-regular fa-calendar"></i><span>レーザー無 MEA</span></div>
+                    <div class="icon-btn-simple" onclick="openGuide('reagent-duty')"><i class="fa-solid fa-people-carry-box"></i><span>試薬調製担当</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="p-coming-soon" class="page">
+            <button class="back-btn" onclick="showPage('p-home')"><i class="fa-solid fa-arrow-left"></i> TOPへ戻る</button>
+            <div class="section-card">
+                <div class="coming-soon">
+                    <i class="fa-solid fa-person-digging"></i>
+                    <h2>この項目は準備中です</h2>
+                    <p>コンテンツの追加をお待ちください。</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="p-order" class="page">
+            <button class="back-btn" onclick="showPage('p-home')"><i class="fa-solid fa-arrow-left"></i> TOPへ戻る</button>
+            <div class="section-card color-green">
+                <div class="cat-title">発注・受取</div>
+                <ul class="menu-list">
+                    <li><div class="menu-btn" onclick="showPage('p-egg-receipt')">卵の受取方法 <i class="fa-solid fa-chevron-right"></i></div></li>
+                    <li><div class="menu-btn" onclick="showPage('p-order-method')">溶液や備品の発注方法 <i class="fa-solid fa-chevron-right"></i></div></li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="p-order-method" class="page">
+            <button class="back-btn" onclick="showPage('p-order')"><i class="fa-solid fa-arrow-left"></i> 発注/受取へ戻る</button>
+            <div class="section-card">
+                <div class="recipe-title">溶液や備品の発注方法</div>
+                <div class="note-box">
+                    <span class="note-title">連絡先</span>
+                    金子研グループラインにて、以下の形式で連絡してください。<br>
+                    誰でも気軽に連絡してOKです！
+                </div>
+                <div class="recipe-subtitle">メッセージのテンプレート</div>
+                <div class="template-box">@【金子研】秋山 浩一朗
+【見積もり依頼】
+・スタンダードチップ -1000μl　バルク(1000本入), 111Q, QSP製, 2袋</div>
+                <div class="step-sub">
+                    上記をコピーして、商品名や個数を書き換えて送信してください。<br>
+                    <strong>ポイント：</strong>秋山さんにメンション ＋ 【見積もり依頼】 ＋ 詳細情報
+                </div>
+            </div>
+        </div>
+
+        <div id="p-egg-receipt" class="page">
+            <button class="back-btn" onclick="showPage('p-order')"><i class="fa-solid fa-arrow-left"></i> 発注/受取へ戻る</button>
+            <div class="section-card">
+                <div class="recipe-title">卵の受取・孵卵器投入</div>
+                <div class="note-box"><span class="note-title">実施日時</span>毎週火曜日 11:00 ごろ<br>翌週使用分の卵を投入します。</div>
+                <ol class="step-list">
+                    <li><span class="step-txt">学務課へ受取に行く</span><div class="step-sub">入口はケヤキ門側の外から入る場所を使用。</div></li>
+                    <li><span class="step-txt">開封・検品</span><div class="step-sub">破損がないか 1 個 1 個 確認。</div></li>
+                    <li><span class="step-txt">書き込み</span><div class="step-sub">良品に日付と番号を記入。</div></li>
+                    <li><span class="step-txt">計測・記録</span></li>
+                </ol>
+                <div style="text-align: center; margin-top: 30px;">
+                    <a href="https://drive.google.com/file/d/1zkmnv6RSpbHlguUltFS8ippLsHmUvNft/view?usp=sharing" target="_blank" class="btn-go"><i class="fa-solid fa-file-pdf"></i> 孵卵器管理シート</a>
+                </div>
+            </div>
+        </div>
+
+        <div id="p-reagent-list" class="page">
+            <button class="back-btn" onclick="showPage('p-home')"><i class="fa-solid fa-arrow-left"></i> TOPへ戻る</button>
+            
+            <div class="section-card color-green">
+                <div class="cat-title">調製：培地 (Media)</div>
+                <ul class="menu-list">
+                    <li><div class="menu-btn" onclick="showPage('p-dmem-fbs')">DMEM ＋ P/S ＋ FBS <i class="fa-solid fa-chevron-right"></i></div></li>
+                    <li><div class="menu-btn" onclick="showPage('p-dmem-ps')">DMEM ＋ P/S <i class="fa-solid fa-chevron-right"></i></div></li>
+                    <li><div class="menu-btn" onclick="showPage('p-pbs')">PBS (-) <i class="fa-solid fa-chevron-right"></i></div></li>
+                </ul>
+            </div>
+            <div class="section-card color-green">
+                <div class="cat-title">調製：試薬・その他</div>
+                <ul class="menu-list">
+                    <li><div class="menu-btn" onclick="showPage('p-ps-trypsin')">P/S または トリプシン分注 <i class="fa-solid fa-chevron-right"></i></div></li>
+                    <li><div class="menu-btn" onclick="showPage('p-fbs-inactivation')">FBS 非働化 <i class="fa-solid fa-chevron-right"></i></div></li>
+                    <li><div class="menu-btn" onclick="showPage('p-collagenase')">コラゲナーゼ <i class="fa-solid fa-chevron-right"></i></div></li>
+                    <li><div class="menu-btn" onclick="showPage('p-agarose')">アガロース <i class="fa-solid fa-chevron-right"></i></div></li>
+                    <li><div class="menu-btn" onclick="showPage('p-pei')">PEI / ホウ酸Buffer <i class="fa-solid fa-chevron-right"></i></div></li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="p-dmem-fbs" class="page">
+            <button class="back-btn" onclick="showPage('p-reagent-list')"><i class="fa-solid fa-arrow-left"></i> 調製一覧へ戻る</button>
+            <div class="section-card">
+                <div class="recipe-title">DMEM ＋ P/S ＋ FBS</div>
+                <ol class="step-list">
+                    <li><span class="step-txt">冷凍庫から分注済の「P/S」と「FBS」を取り出す</span></li>
+                    <li><span class="step-txt">解凍する</span><div class="step-sub">プラカップに水道水を入れ、取り出した2つの溶液をつけておく。</div></li>
+                    <li><span class="step-txt">P/S（抗生物質）を 5 ml 加える</span><div class="step-sub">DMEMの瓶を開け、P/Sを入れる。入れたら瓶のフタを閉め、<strong>転倒攪拌</strong>する。</div><div class="note-box"><span class="note-title">なぜP/Sが先？</span>DMEMは養分の塊です。FBSを入れる前に抗生物質(P/S)を先に入れることで、万が一のバクテリア混入リスクを下げます。</div></li>
+                    <li><span class="step-txt">FBS を加える</span><div class="step-sub">粘性があるので、ピペッティングをして全量をしっかり入れる。再度<strong>転倒攪拌</strong>する。</div></li>
+                    <li><span class="step-txt">ラベルを貼って終了</span></li>
+                </ol>
+            </div>
+        </div>
+
+        <div id="p-dmem-ps" class="page">
+            <button class="back-btn" onclick="showPage('p-reagent-list')"><i class="fa-solid fa-arrow-left"></i> 調製一覧へ戻る</button>
+            <div class="section-card">
+                <div class="recipe-title">DMEM ＋ P/S</div>
+                <ol class="step-list">
+                    <li><span class="step-txt">冷凍庫から分注済の「P/S」を取り出す</span><div class="step-sub">※この培地ではFBSは使用しません。</div></li>
+                    <li><span class="step-txt">解凍する</span></li>
+                    <li><span class="step-txt">P/S（抗生物質）を 5 ml 加える</span></li>
+                    <li><span class="step-txt">ラベルを貼って終了</span></li>
+                </ol>
+            </div>
+        </div>
+
+        <div id="p-pbs" class="page">
+            <button class="back-btn" onclick="showPage('p-reagent-list')"><i class="fa-solid fa-arrow-left"></i> 調製一覧へ戻る</button>
+            <div class="section-card">
+                <div class="recipe-title">PBS (-) の作製</div>
+                <div class="recipe-subtitle">① 10x PBS (-) 原液の作製 (500 ml)</div>
+                <div class="step-sub" style="margin-bottom: 15px;">
+                    以下の試薬を混ぜて10倍濃縮液を作ります。<br>
+                    <table style="width:100%; font-size:0.9rem; border-collapse: collapse; margin-top:10px; background:#f9f9f9;">
+                        <tr style="background:#eee; border-bottom:2px solid #ddd;">
+                            <th style="padding:8px; text-align:left;">試薬名</th>
+                            <th style="padding:8px; text-align:right;">使用量 (500 ml 分)</th>
+                        </tr>
+                        <tr style="border-bottom:1px solid #eee;"><td style="padding:8px;">NaCl</td><td style="padding:8px; text-align:right; font-weight:bold;">40 g</td></tr>
+                        <tr style="border-bottom:1px solid #eee;"><td style="padding:8px;">KCl</td><td style="padding:8px; text-align:right; font-weight:bold;">1 g</td></tr>
+                        <tr style="border-bottom:1px solid #eee;"><td style="padding:8px;">Na₂HPO₄・12H₂O</td><td style="padding:8px; text-align:right; font-weight:bold;">17.9 g</td></tr>
+                        <tr style="border-bottom:1px solid #eee;"><td style="padding:8px;">KH₂PO₄</td><td style="padding:8px; text-align:right; font-weight:bold;">1.36 g</td></tr>
+                    </table>
+                </div>
+                <ol class="step-list">
+                    <li><span class="step-txt">MilliQの準備</span><div class="step-sub">MilliQ 400 ml をメスシリンダーで測り取り、ビーカーに移す。</div></li>
+                    <li><span class="step-txt">試薬の溶解</span><div class="step-sub">スターラーで撹拌しながら、試薬を順次加えて完全に溶かす。</div></li>
+                    <li><span class="step-txt">メスアップ (500 ml)</span><div class="step-sub">メスシリンダーに戻し、MilliQを加えて全量を 500 ml に合わせる。</div></li>
+                    <li><span class="step-txt">滅菌・保存</span><div class="step-sub">オートクレーブ (121 ℃、20 min)。<span style="color:#e67e22; font-weight:bold;">常温保存</span>。</div></li>
+                </ol>
+                <div class="recipe-subtitle">② 1x PBS (-) 使用液の作製 (500 ml)</div>
+                <ol class="step-list">
+                    <li><span class="step-txt">10x PBS (-) を 50 ml 用意する</span></li>
+                    <li><span class="step-txt">MilliQで 500 ml にメスアップ</span></li>
+                    <li><span class="step-txt">滅菌</span><div class="step-sub">オートクレーブ (121 ℃、20 min)。</div></li>
+                    <li><span class="step-txt">冷蔵保存</span><div class="step-sub"><span style="color:#2980b9; font-weight:bold;">冷蔵庫 (4 ℃)</span>で保存。</div></li>
+                </ol>
+            </div>
+        </div>
+
+        <div id="p-fbs-inactivation" class="page">
+            <button class="back-btn" onclick="showPage('p-reagent-list')"><i class="fa-solid fa-arrow-left"></i> 調製一覧へ戻る</button>
+            <div class="section-card">
+                <div class="recipe-title">FBS 非働化 (Heat Inactivation)</div>
+                <div class="note-box"><span class="note-title">目的</span>血清中の補体を不活性化するため、56 ℃ で 30 min 間加熱処理を行います。</div>
+                <div class="recipe-subtitle">Preparation (Day -3)</div>
+                <ol class="step-list">
+                    <li><span class="step-txt">FBSを解凍する（3日前）</span><div class="step-sub">4 ℃ 冷蔵庫で<strong>3日間</strong>かけて溶かす。</div></li>
+                    <li><span class="step-txt">コントロール用ボトルの準備</span></li>
+                </ol>
+                <div class="recipe-subtitle">Procedure (Day 0)</div>
+                <ol class="step-list">
+                    <li><span class="step-txt">ウォーターバスを 56 ℃ に設定</span></li>
+                    <li><span class="step-txt">ボトルを温める</span></li>
+                    <li><span class="step-txt">非働化処理 (56 ℃, 30 min)</span><div class="warning-box"><span class="warning-title">重要：5 min おきに撹拌する！</span></div></li>
+                    <li><span class="step-txt">冷却とろ過</span><div class="step-sub">氷水で 10 min 冷却し、<strong>滅菌フィルター</strong>に通す。</div></li>
+                    <li><span class="step-txt">分注・保存</span><div class="step-sub">50 ml ずつ分注し、冷凍庫 (-18 ℃) で保存。</div></li>
+                </ol>
+            </div>
+        </div>
+
+        <div id="p-collagenase" class="page">
+            <button class="back-btn" onclick="showPage('p-reagent-list')"><i class="fa-solid fa-arrow-left"></i> 調製一覧へ戻る</button>
+            <div class="section-card">
+                <div class="recipe-title">コラゲナーゼ (Collagenase)</div>
+                <div class="warning-box"><span class="warning-title"><i class="fa-solid fa-skull-crossbones"></i> 危険！吸入厳禁</span>粉末を吸い込むと危険です。</div>
+                <ol class="step-list">
+                    <li><span class="step-txt">準備：MilliQを冷やす</span></li>
+                    <li><span class="step-txt">粉を溶かす</span><div class="step-sub">冷えた MilliQ 1 ml を加え、壁面を伝わらせて溶かす。</div></li>
+                    <li><span class="step-txt">溶解（3時間〜一晩）</span></li>
+                    <li><span class="step-txt">分注</span><div class="step-sub">PCRチューブに 100 µl ずつ分注。</div></li>
+                </ol>
+            </div>
+        </div>
+
+        <div id="p-agarose" class="page">
+            <button class="back-btn" onclick="showPage('p-reagent-list')"><i class="fa-solid fa-arrow-left"></i> 調製一覧へ戻る</button>
+            <div class="section-card">
+                <div class="recipe-title">アガロース (Agarose)</div>
+                <ol class="step-list">
+                    <li><span class="step-txt">混合 (3 % 溶液)</span><div class="step-sub">30 ml 瓶に、MilliQ 10 ml と アガロース粉 0.3 g を入れる。</div></li>
+                    <li><span class="step-txt">レンジで加熱</span><div class="step-sub"><strong>※フタを開けたまま！</strong> 吹きこぼれ注意。</div></li>
+                    <li><span class="step-txt">分注</span><div class="step-sub">PCRチューブに 100 µl ずつ分注。</div></li>
+                </ol>
+            </div>
+        </div>
+
+        <div id="p-pei" class="page">
+            <button class="back-btn" onclick="showPage('p-reagent-list')"><i class="fa-solid fa-arrow-left"></i> 調製一覧へ戻る</button>
+            <div class="section-card">
+                <div class="recipe-title">PEI / ホウ酸 Buffer 調製</div>
+                <div class="recipe-subtitle">① 25 mM ホウ酸 Buffer (500 ml)</div>
+                <ol class="step-list">
+                    <li><span class="step-txt">溶解</span><div class="step-sub">MilliQ 450 ml に四ホウ酸ナトリウム 4.763 g を溶かす。</div></li>
+                    <li><span class="step-txt">pH調整 (pH 8.4)</span><div class="step-sub">1 M HClで調整。</div></li>
+                    <li><span class="step-txt">メスアップ・滅菌</span></li>
+                </ol>
+                <div class="recipe-subtitle">② 1 % PEI ストック溶液</div>
+                <ol class="step-list">
+                    <li><span class="step-txt">混合</span><div class="step-sub">PEI原液 1 ml ＋ ホウ酸Buffer 49 ml。</div></li>
+                </ol>
+                <div class="recipe-subtitle">③ 0.1 % PEI 溶液（使用時）</div>
+                <ol class="step-list">
+                    <li><span class="step-txt">希釈・コーティング</span><div class="step-sub">1 % ストックを10倍希釈。</div></li>
+                </ol>
+            </div>
+        </div>
+
+        <div id="p-ps-trypsin" class="page">
+            <button class="back-btn" onclick="showPage('p-reagent-list')"><i class="fa-solid fa-arrow-left"></i> 調製一覧へ戻る</button>
+            <div class="section-card">
+                <div class="recipe-title">P/S および トリプシン分注</div>
+                <ol class="step-list">
+                    <li><span class="step-txt">分注</span><div class="step-sub">15 ml チューブに 10 ml ずつ分注。（計10本）</div></li>
+                    <li><span class="step-txt">保存</span><div class="step-sub">冷凍保存。</div></li>
+                </ol>
+            </div>
+        </div>
+
+        <div id="p-exp-seeding" class="page">
+            <button class="back-btn" onclick="showPage('p-home')"><i class="fa-solid fa-arrow-left"></i> TOPへ戻る</button>
+            <div class="section-card color-orange">
+                <div class="cat-title">MEA dishの準備</div>
+                <ul class="menu-list">
+                    <li><div class="menu-btn" onclick="showPage('p-new-mea')">新MEA開封 <i class="fa-solid fa-chevron-right"></i></div></li>
+                    <li><div class="menu-btn" onclick="showPage('p-plasma')">プラズマ処理 <i class="fa-solid fa-chevron-right"></i></div></li>
+                    <li><div class="menu-btn" onclick="showPage('p-amc-menu')">AMC加工 <i class="fa-solid fa-chevron-right"></i></div></li>
+                    <li><div class="menu-btn" onclick="showPage('p-collagen')">コラーゲン調製・播種 <i class="fa-solid fa-chevron-right"></i></div></li>
+                </ul>
+            </div>
+            <div class="section-card color-orange">
+                <div class="cat-title">心筋細胞の単離</div>
+                <ul class="menu-list">
+                    <li><div class="menu-btn" onclick="showPage('p-isolation-prep')">準備 <i class="fa-solid fa-chevron-right"></i></div></li>
+                    <li><div class="menu-btn" onclick="showPage('p-isolation-work')">解剖・単離手順 <i class="fa-solid fa-chevron-right"></i></div></li>
+                    <li><div class="menu-btn" onclick="showPage('p-cleanup-tools')">機器・器具の洗浄 <i class="fa-solid fa-chevron-right"></i></div></li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="p-new-mea" class="page">
+            <button class="back-btn" onclick="showPage('p-exp-seeding')"><i class="fa-solid fa-arrow-left"></i> 播種メニューへ戻る</button>
+            <div class="section-card">
+                <div class="recipe-title">新MEA dishの開封</div>
+                <ol class="step-list">
+                    <li>
+                        <span class="step-txt">Lot番号の記録</span>
+                        <div class="step-sub">実験ノートにLot番号を控える。</div>
+                    </li>
+                    <li>
+                        <span class="step-txt">火炎滅菌</span>
+                        <div class="step-sub">電極板を 2,3 sec ほど炙る。<br>※ピンセットで四つ角を強く掴んで行う。</div>
+                    </li>
+                    <li>
+                        <span class="step-txt">MilliQを入れる</span>
+                        <div class="step-sub">滅菌水 2 ml を入れる。</div>
+                    </li>
+                    <li>
+                        <span class="step-txt">脱気 (10 min)</span>
+                        <div class="step-sub">デシケーターで 10 min 脱気する。</div>
+                        <div class="note-box">
+                            <span class="note-title">目的</span>
+                            白金黒の下から空気を除き、破損を防ぐため。<br>
+                            （空気が残っていると、膨張して電極が飛んでしまうことがある）
+                        </div>
+                    </li>
+                </ol>
+                <div style="text-align: center; margin-top: 20px;">
+                    <a href="https://drive.google.com/file/d/1Ivo2BJoCOAg5oIY6iyhrn8QJ1K7gdSHw/view?usp=sharing" target="_blank" class="btn-go"><i class="fa-solid fa-file-pdf"></i> MED Probe Manual</a>
+                </div>
+            </div>
+        </div>
+
+        <div id="p-amc-menu" class="page">
+            <button class="back-btn" onclick="showPage('p-exp-seeding')"><i class="fa-solid fa-arrow-left"></i> 播種メニューへ戻る</button>
+            <div class="section-card color-orange">
+                <div class="cat-title">AMC加工メニュー</div>
+                <ul class="menu-list">
+                    <li><div class="menu-btn" onclick="showPage('p-amc-coating')">1. アガロースコート <i class="fa-solid fa-chevron-right"></i></div></li>
+                    <li><div class="menu-btn" onclick="showPage('p-amc-laser')">2. レーザー加工 <i class="fa-solid fa-chevron-right"></i></div></li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="p-amc-coating" class="page">
+            <button class="back-btn" onclick="showPage('p-amc-menu')"><i class="fa-solid fa-arrow-left"></i> AMCメニューへ戻る</button>
+            <div class="section-card">
+                <div class="recipe-title">1. アガロースコート</div>
+                <ol class="step-list">
+                    <li>
+                        <span class="step-txt">準備・親水化</span>
+                        <div class="step-sub">
+                            1. ヒートブロックを 90 ℃ に設定（温度計で確認）。<br>
+                            2. Dish中央に青丸マーカーをつける。<br>
+                            3. プラズマ装置で親水化処理する。
+                        </div>
+                    </li>
+                    <li>
+                        <span class="step-txt">アガロース溶解</span>
+                        <div class="step-sub">
+                            ヒートブロックが 60 ℃ を超えたら、3 % LMPアガロースを入れて溶かす。<br>
+                            （※製品融点：60 ℃くらい）
+                        </div>
+                    </li>
+                    <li>
+                        <span class="step-txt">Dishの湿潤</span>
+                        <div class="step-sub">
+                            Dishに 1 ml のMilliQを入れ、なるべく全て吸い取る。<br>
+                            （表面を少し濡らすことでアガロースを広がりやすくする）
+                        </div>
+                    </li>
+                    <li>
+                        <span class="step-txt">スピンコーター設定</span>
+                        <div class="step-sub">
+                            スイッチON。<br>
+                            <strong>プログラム No. 3</strong> に設定。<br>
+                            (500 rpm / 5 s, 3000 rpm / 20 s)
+                        </div>
+                    </li>
+                    <li>
+                        <span class="step-txt">塗布 (素早く！)</span>
+                        <div class="step-sub">
+                            Dishをセットし、VACUUM MODEで固定。<br>
+                            溶けたアガロース 100 µl を中心に入れ、蓋をしてSTART。<br>
+                            ※端に液体が溜まればOK。
+                        </div>
+                    </li>
+                    <li>
+                        <span class="step-txt">乾燥</span>
+                        <div class="step-sub">
+                            クリーンベンチ内で蓋を開け、風を当てて <strong>1 hour 以上</strong>乾燥させる。<br>
+                            ※乾燥不十分だと細胞が潜り込む原因になる。
+                        </div>
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <div id="p-amc-laser" class="page">
+            <button class="back-btn" onclick="showPage('p-amc-menu')"><i class="fa-solid fa-arrow-left"></i> AMCメニューへ戻る</button>
+            <div class="section-card">
+                <div class="recipe-title">2. レーザー加工</div>
+                
+                <div class="warning-box">
+                    <span class="warning-title">安全上の注意</span>
+                    <ul>
+                        <li>レンズは覗かない（モニターを見る）。</li>
+                        <li>ワット数は少しずつ上げる。</li>
+                        <li><strong>泡厳禁：</strong>電極上の泡に打つと電極が壊れます。ピペッティングで除去すること。</li>
+                    </ul>
+                </div>
+
+                <div class="recipe-subtitle">事前準備</div>
+                <ol class="step-list">
+                    <li>
+                        <span class="step-txt">セッティング</span>
+                        <div class="step-sub">
+                            Dishに PBS 1 ml を入れ、ステージに固定。<br>
+                            電源ON（カメラ・モニター・Laser Driver・顕微鏡・XY Stage）。<br>
+                            倍率：<strong>10× (黄)</strong>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="step-txt">焦点調整</span>
+                        <div class="step-sub">
+                            右側の小さいダイヤルを回し、目盛りを <strong>+150 µm</strong> に設定。<br>
+                            （1周 100 µm → 1.5周回す）<br>
+                            ※電極破壊防止のため焦点をずらす。RasPi使用時は自動調整されるが確認推奨。
+                        </div>
+                    </li>
+                </ol>
+
+                <div class="recipe-subtitle">A. 手動の場合</div>
+                <ol class="step-list">
+                    <li>
+                        <span class="step-txt">ドライバー設定</span>
+                        <div class="step-sub">
+                            Selectボタンで「A → W」に変更。<br>
+                            目的のワット数に設定。
+                        </div>
+                    </li>
+                    <li>
+                        <span class="step-txt">照射</span>
+                        <div class="step-sub">
+                            Missionボタンで照射モードへ。<br>
+                            ボタンを押して対象箇所に照射する。
+                        </div>
+                    </li>
+                    <li>
+                        <span class="step-txt">終了</span>
+                        <div class="step-sub">
+                            Emission OFF、出力を 0.00 W にしてから電源OFF。
+                        </div>
+                    </li>
+                </ol>
+
+                <div class="recipe-subtitle">B. Raspberry Pi の場合</div>
+                <ol class="step-list">
+                    <li>
+                        <span class="step-txt">接続・起動</span>
+                        <div class="step-sub">
+                            XY Stage Controller: Modeを「RS-232C」に。<br>
+                            Laser DriverとUSB接続。白コードはスイッチ、黒コードはPCへ。<br>
+                            電源アダプターを挿し直し、緑・赤ライト点灯で起動確認（約 30 s）。
+                        </div>
+                    </li>
+                    <li>
+                        <span class="step-txt">IC capture設定</span>
+                        <div class="step-sub">
+                            画像サイズ：Y800 (600×480)<br>
+                            ROI（デバイス）：幅48 / 高さ48<br>
+                            位置：X1 296 / Y1 216 / X2 344 / Y2 264
+                        </div>
+                    </li>
+                    <li>
+                        <span class="step-txt">Tera Term 起動</span>
+                        <div class="step-sub">
+                            ホスト名：raspberrypi.local または 169.254.172.172<br>
+                            ユーザー：pi<br>
+                            パスワード：raspberry
+                        </div>
+                    </li>
+                    <li>
+                        <span class="step-txt">コマンド実行</span>
+                        <div class="step-sub">
+                            <code>cd (ファイル名)</code> : 移動<br>
+                            <code>amc_plt (ファイル名) -c</code> : 経路データ選択<br>
+                            四隅（upper left等）を画面枠に合わせてEnterで開始。
+                        </div>
+                    </li>
+                    <li>
+                        <span class="step-txt">シャットダウン</span>
+                        <div class="step-sub">
+                            <code>sudo shutdown -h now</code><br>
+                            Laser Driver出力 0.00 W にしてOFF。<br>
+                            Dishは滅菌水 1 ml に置換して保存。
+                        </div>
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <div id="p-plasma" class="page">
+            <button class="back-btn" onclick="showPage('p-exp-seeding')"><i class="fa-solid fa-arrow-left"></i> 播種メニューへ戻る</button>
+            <div class="section-card">
+                <div class="recipe-title">プラズマ処理</div>
+                <div class="note-box">
+                    <span class="note-title">目的</span>
+                    <ul>
+                        <li><strong>親水化：</strong>表面にO2ラジカルを照射し、親水性にする（コーティング剤をはじかなくする）。</li>
+                        <li><strong>洗浄：</strong>有機汚染物を除去する。</li>
+                    </ul>
+                </div>
+                <ol class="step-list">
+                    <li><span class="step-txt">電源ON・真空引き</span><div class="step-sub">ポンプと装置のスイッチON。<br>VACUUM VALVEをOpen（赤）、PURGE VALVEをClose（青）にして真空引きする。</div></li>
+                    <li><span class="step-txt">サンプルセット</span><div class="step-sub">READYランプ点灯後、サンプルを入れる。<br>再び真空引きし、PRESSURE GAUGEが下がるのを確認。</div></li>
+                    <li><span class="step-txt">プラズマ照射</span><div class="step-sub">1. GASをONにする（Flow meter 100程度）。<br>2. PLASMAをONにする（紫色の光）。<br>3. <strong>10 sec</strong>（任意）照射する。</div></li>
+                    <li><span class="step-txt">終了・取り出し</span><div class="step-sub">PLASMA→GASの順にOFF。<br>VACUUMをCloseにし、PURGEをゆっくりOpenにして大気圧に戻す。</div></li>
+                </ol>
+            </div>
+        </div>
+
+        <div id="p-collagen" class="page">
+            <button class="back-btn" onclick="showPage('p-exp-seeding')"><i class="fa-solid fa-arrow-left"></i> 播種メニューへ戻る</button>
+            <div class="section-card">
+                <div class="recipe-title">コラーゲン調製・播種</div>
+                <div class="note-box">
+                    <span class="note-title">原理</span>
+                    コラーゲンは酸性（pH 3）で水に溶けます。同pHの希塩酸で希釈し、使用直前にDish上で中性に戻すことでゲル化させ、細胞が接着できるようにします。
+                </div>
+                <ol class="step-list">
+                    <li>
+                        <span class="step-txt">希釈 (1 : 9)</span>
+                        <div class="step-sub">
+                            エッペンチューブで混合する。<br>
+                            <strong>コラーゲン ： 希塩酸 ＝ 1 ： 9</strong><br>
+                            ※混ざりやすくするため、量が多い希塩酸を後から入れる。
+                        </div>
+                    </li>
+                    <li>
+                        <span class="step-txt">播種・インキュベート</span>
+                        <div class="step-sub">
+                            Dish中央に真上から滴下する。<br>
+                            インキュベート：<strong>30 min 以上</strong>（目安：10 µl滴下時）
+                        </div>
+                    </li>
+                    <li>
+                        <span class="step-txt">乾燥・中性化</span>
+                        <div class="step-sub">
+                            希塩酸が揮発して乾いていることを確認。<br>
+                            PBS (-) 1 ml を加え、アスピレーターで吸ってWashする（pHを中性に戻す）。
+                        </div>
+                    </li>
+                    <li>
+                        <span class="step-txt">培地添加</span>
+                        <div class="step-sub">
+                            FBSありDMEM 1 ml を加える。<br>
+                            ※細胞が底面に接着しやすくするため、最初は少なめの液量にする。
+                        </div>
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <div id="p-isolation-prep" class="page">
+            <button class="back-btn" onclick="showPage('p-exp-seeding')"><i class="fa-solid fa-arrow-left"></i> 播種メニューへ戻る</button>
+            <div class="section-card">
+                <div class="recipe-title">準備 (単離実験)</div>
+                <div class="recipe-subtitle">① 機器の設定</div>
+                <ul class="menu-list">
+                    <li>
+                        <strong>ソニケーター：</strong>MilliQを水位線まで入れ、酵素（ZYMIT）を一回り程度入れる。
+                    </li>
+                    <li>
+                        <strong>マグネチックスターラー：</strong>白バケツ1.5杯分の水を入れ、37 ℃ に設定して予熱する。
+                    </li>
+                </ul>
+
+                <div class="recipe-subtitle">② クリーンベンチ内の準備</div>
+                <ul class="menu-list">
+                    <li>解剖機器（7種）、キムタオル（2枚重ねて3区画作る）</li>
+                    <li>スターラー入りビーカー、簡易ゴミ箱</li>
+                    <li><strong>シャーレの準備：</strong><br>3枚：FBSありDMEMを 0 ml, 5 ml, 10 ml 入れる。<br>他：番号を振って重ねておく。</li>
+                </ul>
+                <div class="note-box">
+                    <span class="note-title">FBSの役割</span>
+                    FBS（血清）には酵素阻害物質が含まれており、トリプシンなどの活性を止めるために使用します。
+                </div>
+
+                <div class="recipe-subtitle">③ 溶液の準備</div>
+                <ul class="menu-list">
+                    <li><strong>冷蔵：</strong>FBSありDMEM、FBSなしDMEM、PBS (-)</li>
+                    <li><strong>冷凍：</strong>コラゲナーゼ（使用直前に溶かし、泡立てないよう転倒混和）</li>
+                </ul>
+
+                <div class="recipe-subtitle">④ 卵の準備</div>
+                <div class="step-sub">
+                    使用直前にアルコールを吹きかけて菌を除去する。<br>
+                    ※孵卵器から出すと心筋の動きが弱まるため、解剖直前に取り出すこと。
+                </div>
+            </div>
+        </div>
+
+        <div id="p-isolation-work" class="page">
+            <button class="back-btn" onclick="showPage('p-exp-seeding')"><i class="fa-solid fa-arrow-left"></i> 播種メニューへ戻る</button>
+            <div class="section-card">
+                <div class="recipe-title">解剖・単離手順</div>
+                <div class="warning-box">
+                    <span class="warning-title">解剖時の注意</span>
+                    心臓を切る際はハサミの刃を入れすぎないこと。切断面の細胞は死滅します。
+                </div>
+
+                <ol class="step-list">
+                    <li>
+                        <span class="step-txt">組織の細断・洗浄</span>
+                        <div class="step-sub">
+                            10 ml オートピペッターで心臓組織を 15 ml チューブに移す。<br>
+                            PBS (-) 10 ml を加えて転倒混和（Wash）し、沈殿を待って上清を吸う。<br>
+                            ※これを繰り返し、血球を取り除く。最後に細胞片のみにする。
+                        </div>
+                    </li>
+                    <li>
+                        <span class="step-txt">コラゲナーゼ処理 (1回目)</span>
+                        <div class="step-sub">
+                            コラゲナーゼ全量を加え、スターラーで <strong>37 ℃, 10 min</strong> 撹拌する。<br>
+                            目的：心臓周辺の冠動脈の除去。
+                        </div>
+                    </li>
+                    <li>
+                        <span class="step-txt">上清除去・2回目処理</span>
+                        <div class="step-sub">
+                            5 ml ピペッターで上清（不要な組織片）を除く。<br>
+                            新しいコラゲナーゼを加え、ピペッティングで組織を崩してから、<strong>37 ℃, 20 min</strong> 撹拌する。<br>
+                            目的：組織内部への酵素浸透。
+                        </div>
+                    </li>
+                    <li>
+                        <span class="step-txt">遠心分離</span>
+                        <div class="step-sub">
+                            セルストレーナーでろ過し、FBSなしDMEMを加えて総量 35 ml にする。<br>
+                            <strong>20 ℃, 1000 rpm, 5 min</strong> で遠心。<br>
+                            （細胞は沈殿、赤血球などは上清へ）
+                        </div>
+                    </li>
+                    <li>
+                        <span class="step-txt">プレプレーティング（線維芽細胞除去）</span>
+                        <div class="step-sub">
+                            沈殿（ペレット）をFBSありDMEMで懸濁し、コルベン（フラスコ）に入れる。<br>
+                            <strong>37 ℃ (CO2 5 %) で 18 min</strong> インキュベート。<br>
+                            ※足の速い線維芽細胞だけが壁面に張り付き、心筋細胞は浮遊したまま残る。
+                        </div>
+                        <div class="note-box">
+                            <span class="note-title">CO2インキュベーターの役割</span>
+                            庫内を CO2 5 % に保つことで培地中の炭酸イオン濃度を維持し、pHを一定に保ちます。
+                        </div>
+                    </li>
+                    <li>
+                        <span class="step-txt">心筋細胞の回収</span>
+                        <div class="step-sub">
+                            浮遊している心筋細胞を回収し、FBSなしDMEMでコルベン表面を洗って全回収する。<br>
+                            再度、<strong>20 ℃, 1000 rpm, 5 min</strong> で遠心。
+                        </div>
+                    </li>
+                    <li>
+                        <span class="step-txt">カウント・播種</span>
+                        <div class="step-sub">
+                            トリパンブルーで染色し、血球計算盤で細胞数をカウント。<br>
+                            希釈倍率を考慮して、目的の濃度（例: 1×10^7 cells/ml）になるよう培地量を調整し、Dishに播種する。
+                        </div>
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <div id="p-exp-measure" class="page">
+            <button class="back-btn" onclick="showPage('p-home')"><i class="fa-solid fa-arrow-left"></i> TOPへ戻る</button>
+            <div class="section-card color-orange">
+                <div class="cat-title">培養・計測</div>
+                <ul class="menu-list">
+                    <li><div class="menu-btn" onclick="showPage('p-mea-measurement')">MEA計測 <i class="fa-solid fa-chevron-right"></i></div></li>
+                    <li><div class="menu-btn" onclick="window.open('https://drive.google.com/file/d/1ldC2vfBFAZ_5h8NMRc_v0tRhNLkJdlMJ/view?usp=sharing', '_blank')">カルシウムイメージング <i class="fa-solid fa-chevron-right"></i></div></li>
+                    <li><div class="menu-btn" onclick="showPage('p-coming-soon')">レーザー照射 <i class="fa-solid fa-chevron-right"></i></div></li>
+                    <li><div class="menu-btn" onclick="showPage('p-coming-soon')">細胞染色 <i class="fa-solid fa-chevron-right"></i></div></li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="p-mea-measurement" class="page">
+            <button class="back-btn" onclick="showPage('p-exp-measure')"><i class="fa-solid fa-arrow-left"></i> 計測メニューへ戻る</button>
+            <div class="section-card">
+                <div class="recipe-title">MEA計測</div>
+                <div class="recipe-subtitle">手順</div>
+                <ol class="step-list">
+                    <li>
+                        <span class="step-txt">セット</span>
+                        <div class="step-sub">機械上にDishをセットし、蓋を被せる。</div>
+                    </li>
+                    <li>
+                        <span class="step-txt">放電 (10 s)</span>
+                        <div class="step-sub">
+                            10 s 流す。<br>
+                            ※1日の始めだけ、静電気を逃がす目的で行う。
+                        </div>
+                    </li>
+                    <li>
+                        <span class="step-txt">安定化 (10 min 以上)</span>
+                        <div class="step-sub">
+                            10 min 以上流す。<br>
+                            ※CO2や温度を慣らして状態を安定させる。データ保存は不要。
+                        </div>
+                    </li>
+                    <li>
+                        <span class="step-txt">計測・保存 (2 min)</span>
+                        <div class="step-sub">
+                            2 min 保存する。
+                        </div>
+                    </li>
+                </ol>
+
+                <div class="recipe-subtitle">Cell-Bioの使い方</div>
+                <ul class="menu-list" style="font-size: 0.95rem;">
+                    <li><strong>[ 512 ]：</strong>メモリ保存（時間制限あり）</li>
+                    <li><strong>なし：</strong>HDD保存（時間制限なし）</li>
+                </ul>
+                <div class="step-sub" style="margin-top: 10px;">
+                    <strong>スクリーンショット：</strong><br>
+                    Print Screen → ペイントに貼り付け → JPEG保存 → マイドキュメント
+                </div>
+                <div class="step-sub" style="margin-top: 10px;">
+                    <strong>データ保存：</strong><br>
+                    ファイル → データ保存。<br>
+                    <span style="color: #c0392b;">※必ずファイル名の末尾に「.0001」をつけること。</span>
+                </div>
+
+                <div style="text-align: center; margin-top: 20px;">
+                    <a href="https://drive.google.com/file/d/17oEeEUqbo0cl9b7PBW_tBf3ImjVtjK86/view?usp=sharing" target="_blank" class="btn-go"><i class="fa-solid fa-file-pdf"></i> 設定マニュアル (PDF)</a>
+                </div>
+            </div>
+        </div>
+
+        <div id="p-exp-cleanup" class="page">
+            <button class="back-btn" onclick="showPage('p-home')"><i class="fa-solid fa-arrow-left"></i> TOPへ戻る</button>
+            <div class="section-card color-orange">
+                <div class="cat-title">片付け・実験終了</div>
+                <ul class="menu-list">
+                    <li><div class="menu-btn" onclick="showPage('p-trypsin-mea')">MEA洗浄 (トリプシン) <i class="fa-solid fa-chevron-right"></i></div></li>
+                    </ul>
+            </div>
+        </div>
+
+        <div id="p-trypsin-mea" class="page">
+            <button class="back-btn" onclick="showPage('p-exp-cleanup')"><i class="fa-solid fa-arrow-left"></i> 片付けメニューへ戻る</button>
+            <div class="section-card">
+                <div class="recipe-title">MEA洗浄 (トリプシン処理)</div>
+                <div class="note-box">
+                    <span class="note-title">重要</span>
+                    PBSでの洗浄をサボると、カドヘリン（細胞接着因子）が除去できず、細胞が綺麗に剥がれません。
+                </div>
+                <ol class="step-list">
+                    <li>
+                        <span class="step-txt">PBS Wash (2回)</span>
+                        <div class="step-sub">
+                            培地を吸い、PBS (-) 1 ml を入れて吸う。これを<strong>2回</strong>繰り返す。
+                        </div>
+                    </li>
+                    <li>
+                        <span class="step-txt">トリプシン処理</span>
+                        <div class="step-sub">
+                            トリプシン 500 µl を加え、<strong>10 min 以上</strong>放置する。
+                        </div>
+                    </li>
+                    <li>
+                        <span class="step-txt">お湯洗い・乾燥</span>
+                        <div class="step-sub">
+                            細胞が剥がれていることを確認し、お湯（MilliQで作製）で電極に触れないよう洗う。<br>
+                            アスピレーターで水滴を完全に吸い取り、引き出しで保存。
+                        </div>
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <div id="p-cleanup-tools" class="page">
+            <button class="back-btn" onclick="showPage('p-exp-seeding')"><i class="fa-solid fa-arrow-left"></i> 播種メニューへ戻る</button>
+            <div class="section-card">
+                <div class="recipe-title">機器・器具の洗浄</div>
+                
+                <div class="recipe-subtitle">① 孵卵器 (残数0個時)</div>
+                <div class="step-sub">
+                    グレーのトレー、下のスポンジ、仕切り3枚を取り出し、コンタミノンで洗う。
+                </div>
+
+                <div class="recipe-subtitle">② 解剖機器</div>
+                <div class="step-sub">
+                    1. コンタミノンで洗い、DWで流す。<br>
+                    2. ソニケーターに入れ、STARTボタンを押す（ハサミは全開にする）。<br>
+                    3. 30 min 後、DWで流して乾燥させる。
+                </div>
+
+                <div class="recipe-subtitle">③ ソニケーター</div>
+                <div class="step-sub">
+                    洗浄液を捨て、MilliQで壁面を2回洗う。キムタオルで拭く。
+                </div>
+
+                <div class="recipe-subtitle">④ ウォーターバス</div>
+                <div class="step-sub">
+                    電源OFF、コンセントを抜き、水をすべて捨てる。
+                </div>
+            </div>
+        </div>
+
+        <div id="p-gas-burner" class="page">
+            <button class="back-btn" onclick="showPage('p-home')"><i class="fa-solid fa-arrow-left"></i> TOPへ戻る</button>
+            <div class="section-card">
+                <div class="recipe-title">ガスバーナー</div>
+                <ol class="step-list">
+                    <li><span class="step-txt">元栓を開ける</span></li>
+                    <li><span class="step-txt">右の小さいバルブを開ける</span></li>
+                    <li><span class="step-txt">着火</span><div class="step-sub">バーナー先端をつけ、火花で着火する。</div></li>
+                    <li><span class="step-txt">左のバルブを開ける</span><div class="step-sub">これで火が安定します。</div></li>
+                    <li><span class="step-txt">使用（ペダル）</span><div class="step-sub">ペダルを踏んでいる間だけ火が強くなります。</div></li>
+                </ol>
+            </div>
+        </div>
+
+        <div id="p-autoclave" class="page">
+            <button class="back-btn" onclick="showPage('p-home')"><i class="fa-solid fa-arrow-left"></i> TOPへ戻る</button>
+            <div class="section-card">
+                <div class="recipe-title">オートクレーブ</div>
+                <div class="note-box">
+                    <span class="note-title">目的</span>
+                    高温高圧下で滅菌処理を行います。
+                    <ul>
+                        <li><strong>廣野折り：</strong>袋を折る際、蒸気が入りやすいように隙間を作る折り方（ツルツルを合わせ、四辺を少しずつ折って厚みを出す）。</li>
+                        <li><strong>オートクレーブテープ：</strong>滅菌されると黒い線が出るテープ。</li>
+                    </ul>
+                </div>
+
+                <div class="recipe-subtitle">基本手順</div>
+                <ol class="step-list">
+                    <li>
+                        <span class="step-txt">水量・水入れ</span>
+                        <div class="step-sub">
+                            右下の水量がHigh-Low間にあるか確認（多ければ捨てる）。<br>
+                            釜の底の中心がギリギリ浸かる程度に水道水を入れる。
+                        </div>
+                    </li>
+                    <li>
+                        <span class="step-txt">セット・蓋閉め</span>
+                        <div class="step-sub">
+                            物を入れ、蓋を人差し指で軽く時計回りに回し、止まったら両手で <strong>90 °</strong> 増し締めする。
+                        </div>
+                    </li>
+                    <li>
+                        <span class="step-txt">設定・開始</span>
+                        <div class="step-sub">
+                            主電源ON → 蓋・排水(EXHAUST: close)・水量を確認。<br>
+                            STARTボタンを押す（121 ℃, 20 min）。
+                        </div>
+                    </li>
+                    <li>
+                        <span class="step-txt">終了確認</span>
+                        <div class="step-sub">
+                            温度 60 ℃、圧力 0 を確認して取り出す。<br>
+                            ※アラームが鳴るが問題ありません。
+                        </div>
+                    </li>
+                </ol>
+
+                <div class="recipe-subtitle">対象別の注意点</div>
+                <ul class="menu-list">
+                    <li>
+                        <strong>滅菌水 (瓶)：</strong><br>
+                        MilliQを補充し、口にアルミホイルを被せ、蓋を<strong>少し緩めて</strong>行う。
+                    </li>
+                    <li>
+                        <strong>スターラー入り滅菌瓶：</strong><br>
+                        洗浄・乾燥後、スターラーを入れてアルミを被せ、蓋を<strong>少し緩めて</strong>行う。
+                    </li>
+                    <li>
+                        <strong>チップ (クリーンベンチ内)：</strong><br>
+                        専用の袋に入れる。チップケースの下に穴がある場合は、水が入らないよう<strong>金網を逆さにして</strong>その上に置く。
+                    </li>
+                    <li>
+                        <strong>エッペンチューブ (クリーンベンチ内)：</strong><br>
+                        新しいチューブをビーカーに入れ、アルミを被せて行う。
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="p-admin-ta" class="page">
+             <button class="back-btn" onclick="showPage('p-home')"><i class="fa-solid fa-arrow-left"></i> TOPへ戻る</button>
+             <div class="section-card color-purple">
+                 <div class="cat-title">TA向け資料</div>
+                 <ul class="menu-list">
+                     <li><div class="menu-btn" onclick="showPage('p-basic-exp-prep')">基礎実験準備 <i class="fa-solid fa-chevron-right"></i></div></li>
+                     <li><div class="menu-btn" onclick="window.open('https://drive.google.com/drive/folders/1sb8EctMdssIDfWBfbviTxowtvzaLmIv9?usp=sharing', '_blank')">学祭準備 <i class="fa-solid fa-chevron-right"></i></div></li>
+                 </ul>
+             </div>
+        </div>
+
+        <div id="p-basic-exp-prep" class="page">
+            <button class="back-btn" onclick="showPage('p-admin-ta')"><i class="fa-solid fa-arrow-left"></i> TA資料へ戻る</button>
+            <div class="section-card">
+                <div class="recipe-title">生命機能学基礎実験Ⅱ 準備 (6/23)</div>
+                <div class="step-sub" style="text-align:right; margin-bottom:15px;">250610 赤田萌々</div>
+
+                <div class="recipe-subtitle">当日の流れ</div>
+                <div class="step-sub">
+                    <ul>
+                        <li><strong>形式：</strong>前後半で分かれ「全体説明 (Zoom) → 実習/演習 (16時交代)」</li>
+                        <li><strong>配置：</strong>各班2テーブル、各テーブル顕微鏡3台設置。<br>（顕微鏡1台につきシャーレ1枚配布 ＝ 各班6枚使用）</li>
+                        <li><strong>人数：</strong>A-H班、各12名</li>
+                    </ul>
+                </div>
+
+                <div class="recipe-subtitle">当日必要なもの</div>
+                <div class="warning-box">
+                    <span class="warning-title">在庫確認 (2週間前)</span>
+                    DMEMやTrypsinなどは、<strong>2週間前</strong>に在庫が足りるか確認すること！！<br>
+                    普段の実験 ＋ 2本は余分に発注しておくこと。
+                </div>
+                <ul class="menu-list" style="font-size:0.95rem;">
+                    <li>✅ <strong>60 mm Tissue culture dish（Fib培養）</strong><br>50 枚（各班6枚×8班＋予備2）</li>
+                    <li>✅ <strong>60 mm Tissue culture dish（Fibなし）</strong><br>50 枚（各班6枚×8班＋予備2）</li>
+                    <li>✅ <strong>DMEM + 10% FBS + 1% P/S</strong><br>30 mL × 17 本（各班1本＋予備1）</li>
+                    <li>✅ <strong>PBS (-)</strong><br>30 mL × 17 本（各班1本＋予備1）</li>
+                    <li>✅ <strong>Trypsin EDTA</strong><br>(Trypsin : PBS = 1 : 1 で希釈済)<br>1.2 mL × 26 本（各班3本＋予備2）</li>
+                    <li>✅ <strong>トリパンブルー</strong><br>100 µL × 17 本（16本＋予備1）</li>
+                    <li>✅ <strong>C-Chip（血球計算盤）</strong><br>50 枚（48枚＋予備2）</li>
+                    <li>✅ <strong>手袋</strong><br>学生人数分（※要先生相談）</li>
+                </ul>
+
+                <div class="recipe-subtitle">使用したFib (卵数:各26個)</div>
+                <ul style="list-style:none; padding-left:10px;">
+                    <li><strong>3週間前 (06/03)：</strong>予備①</li>
+                    <li><strong>2週間前 (06/10)：</strong>本命</li>
+                    <li><strong>1週間前 (06/17)：</strong>予備②</li>
+                </ul>
+
+                <div class="recipe-subtitle">継代培養 1回目 (開始3日後)</div>
+                <div class="step-sub" style="margin-bottom:10px;"><strong>概要：</strong>コルベン 1 枚 → 3 枚</div>
+                <ol class="step-list">
+                    <li><span class="step-txt">洗浄</span><div class="step-sub">培地を捨て、PBS (-) 3 mL でWash。これを2, 3回繰り返す。</div></li>
+                    <li><span class="step-txt">剥離</span><div class="step-sub">トリプシン・EDTA (混和済) 3 ml を加える。<br>顕微鏡で8割程度剥がれるまで確認。<br><span style="color:#c0392b;">※やりすぎ注意！接着力が弱まります。</span></div></li>
+                    <li><span class="step-txt">反応停止・回収</span><div class="step-sub">DMEMを勢いよく加え、全量 15 mL にする。<br>50 mL チューブに移し、<strong>1000 rpm, 5 min</strong> で遠心。</div></li>
+                    <li><span class="step-txt">播種</span><div class="step-sub">上清除去後、DMEM 10 mL で懸濁（ピペッティングで均一化）。<br>新しいコルベン3枚に、<strong>4 mL ずつ</strong>加える。</div></li>
+                </ol>
+                <div class="note-box">
+                    ※3日後だと100%コンフルエントだったので、2日後でも良いかも。適宜確認すること。
+                </div>
+
+                <div class="recipe-subtitle">継代培養 2回目 (開始10日後)</div>
+                <div class="step-sub"><strong>概要：</strong>コルベン 1 枚 → 3 枚（手順は1回目と同上）</div>
+
+                <div class="recipe-subtitle">継代培養 3回目 (開始17日後)</div>
+                <div class="step-sub" style="margin-bottom:10px;"><strong>概要：</strong>コルベン 1 枚 → 60 mm Dish 3-4 枚</div>
+                <ol class="step-list">
+                    <li><span class="step-txt">洗浄・剥離</span><div class="step-sub">PBS Wash × 2,3回 → トリプシン 3 ml。<br>8割剥がれたら DMEM で全量 10 mL にして止める。</div></li>
+                    <li><span class="step-txt">回収・遠心</span><div class="step-sub">同じ解剖日のものを50 mL チューブにまとめる（計 30 mL）。<br>5 mL メスアップしてバランスを取り、<strong>1000 rpm, 5 min</strong> で遠心。</div></li>
+                    <li><span class="step-txt">懸濁</span><div class="step-sub">上清除去後、DMEM 2 mL でペレットを崩す。<br>さらに DMEM 10 mL (or 14 mL) を加え均一にする。</div></li>
+                    <li><span class="step-txt">播種 (4 mL/dish)</span><div class="step-sub">質の良いFibは4枚、イマイチなFibは3枚に分ける。<br><strong>各 4 mL ずつ</strong>播種する。</div></li>
+                </ol>
+                <div class="note-box">
+                    播種30分後は貼りつきが悪くても、3日後（月曜）にはコンフルエントになります。
+                </div>
+
+                <div class="recipe-subtitle">当日準備 (開始24日後)</div>
+                <ol class="step-list">
+                    <li><span class="step-txt">培地交換</span><div class="step-sub">DMEM全量を除去し、<strong>FBSなしDMEM 2 mL</strong> を加える。</div></li>
+                    <li><span class="step-txt">選別・配布</span><div class="step-sub">位相差顕微鏡で確認。<br>・100%コンフルエント → 「100%」と書いて配布。<br>・状態が良くないもの → 「予備」として配布しない。</div></li>
+                </ol>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="guide-modal" class="modal-overlay">
+        <div class="modal-box">
+            <div id="modal-title" class="modal-title">使い方の説明</div>
+            <div id="modal-text" class="modal-text"></div>
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="closeGuide()">キャンセル</button>
+                <a id="modal-link" href="#" target="_blank" class="btn-go">シートを開く</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showPage(pageId) {
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active'));
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                targetPage.classList.add('active');
+                window.scrollTo(0, 0);
+            }
+        }
+        
+        const guideData = {
+            'laser-plus': {
+                title: 'レーザー有 MEA予約',
+                text: '【予約時のルール】<br>・氏名、開始時間、終了時間を必ず記入してください。<br>・使用後は次の方のために清掃を行ってください。<br>・長時間の占有は避けましょう。',
+                url: 'https://docs.google.com/spreadsheets/d/1Iyykb4FtFrtAHlmcRj6RP0GcYoREeRO3rP8sFW_IRXU/edit?gid=1932456055#gid=1932456055'
+            },
+            'laser-minus': {
+                title: 'レーザー無 MEA予約',
+                text: '【予約時のルール】<br>・実験予定が決まり次第、早めに記入してください。<br>・変更がある場合は速やかに修正してください。<br>・トラブル時は管理者に連絡すること。',
+                url: 'https://docs.google.com/spreadsheets/d/1Iyykb4FtFrtAHlmcRj6RP0GcYoREeRO3rP8sFW_IRXU/edit?gid=202336514#gid=202336514'
+            },
+            'reagent-duty': {
+                title: '試薬調製担当',
+                text: '【当番の方へ】<br>・在庫切れがないか確認してください。<br>・調製後はラベルに日付と作成者を記入してください。<br>・足りない試薬があれば発注リストに追加してください。',
+                url: 'https://docs.google.com/spreadsheets/d/1Iyykb4FtFrtAHlmcRj6RP0GcYoREeRO3rP8sFW_IRXU/edit?gid=1085389326#gid=1085389326'
+            }
+        };
+
+        function openGuide(key) {
+            const data = guideData[key];
+            if (data) {
+                document.getElementById('modal-title').innerText = data.title;
+                document.getElementById('modal-text').innerHTML = data.text;
+                document.getElementById('modal-link').href = data.url;
+                document.getElementById('guide-modal').classList.add('active');
+            }
+        }
+        function closeGuide() { document.getElementById('guide-modal').classList.remove('active'); }
+    </script>
+
+</body>
+</html>
