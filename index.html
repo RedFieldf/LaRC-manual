@@ -530,47 +530,46 @@
                 <div class="recipe-title">1. アガロースコート</div>
                 <ol class="step-list">
                     <li>
-                        <span class="step-txt">準備・親水化</span>
+                        <span class="step-txt">準備</span>
                         <div class="step-sub">
-                            1. ヒートブロックを 90 ℃ に設定（温度計で確認）。<br>
-                            2. Dish中央に青丸マーカーをつける。<br>
-                            3. プラズマ装置で親水化処理する。
+                            1. ヒートブロックを 65 ℃ 以上に設定（電子温度計をセットして温度を確認）。<br>
+                            2. Dish中央に青丸マーカーをつける。
                         </div>
                     </li>
                     <li>
                         <span class="step-txt">アガロース溶解</span>
                         <div class="step-sub">
-                            ヒートブロックが 60 ℃ を超えたら、3 % LMPアガロースを入れて溶かす。<br>
-                            （※製品融点：60 ℃くらい）
+                            ヒートブロックが 65 ℃ を超えたら、3 % LMPアガロースを入れて溶かす。<br>
+                            （※ 製品融点は60 ℃くらいだが、<strong>80 ℃を超えるまで</strong>は待つ。）
                         </div>
                     </li>
                     <li>
                         <span class="step-txt">Dishの湿潤</span>
                         <div class="step-sub">
                             Dishに 1 ml のMilliQを入れ、なるべく全て吸い取る。<br>
-                            （表面を少し濡らすことでアガロースを広がりやすくする）
+                            （※ 表面を少し濡らすことで、アガロースを広がりやすくする。）
                         </div>
                     </li>
                     <li>
                         <span class="step-txt">スピンコーター設定</span>
                         <div class="step-sub">
-                            スイッチON。<br>
-                            <strong>プログラム No. 3</strong> に設定。<br>
-                            (500 rpm / 5 s, 3000 rpm / 20 s)
+                            ポンプおよび装置のスイッチをONにする。<br>
+                            <strong>プログラム No. 3</strong> に設定する。<br>
+                            (500 rpm / 5 s →→→ 3000 rpm / 20 s)
                         </div>
                     </li>
                     <li>
-                        <span class="step-txt">塗布 (素早く！)</span>
+                        <span class="step-txt">塗布 (ここは素早く！！)</span>
                         <div class="step-sub">
-                            Dishをセットし、VACUUM MODEで固定。<br>
-                            溶けたアガロース 100 µl を中心に入れ、蓋をしてSTART。<br>
-                            ※端に液体が溜まればOK。
+                            Dishをセットし、VACUUM MODEで固定する。<br>
+                            溶けて白濁していたものが透明になったアガロース 100 µl をDish中心に入れ、蓋をしてSTART。<br>
+                            ※ Dishの端までアガロースが広がっていればOK。
                         </div>
                     </li>
                     <li>
                         <span class="step-txt">乾燥</span>
                         <div class="step-sub">
-                            クリーンベンチ内で蓋を開け、風を当てて <strong>1 hour 以上</strong>乾燥させる。<br>
+                            クリーンベンチ内で蓋を開け、風を当てて <strong>1 時間以上</strong>乾燥させる。<br>
                             ※乾燥不十分だと細胞が潜り込む原因になる。
                         </div>
                     </li>
@@ -587,8 +586,7 @@
                     <span class="warning-title">安全上の注意</span>
                     <ul>
                         <li>レンズは覗かない（モニターを見る）。</li>
-                        <li>ワット数は少しずつ上げる。</li>
-                        <li><strong>泡厳禁：</strong>電極上の泡に打つと電極が壊れます。ピペッティングで除去すること。</li>
+                        <li><strong>泡厳禁：</strong>泡にレーザーを照射すると、任意の位置だけ溶かすことができません。また、電極上の泡に打つと、電極が壊れます。必ず泡が発生したら、ピペッティングで除去すること。</li>
                     </ul>
                 </div>
 
@@ -597,15 +595,16 @@
                     <li>
                         <span class="step-txt">セッティング</span>
                         <div class="step-sub">
-                            Dishに PBS 1 ml を入れ、ステージに固定。<br>
-                            電源ON（カメラ・モニター・Laser Driver・顕微鏡・XY Stage）。<br>
-                            倍率：<strong>10× (黄)</strong>
+                            Dishに PBS 1 ml を入れ、ステージに固定する。<br>
+                            電源をONにする（IC capture または モニター・Laser Driver・顕微鏡・XY Stage）。<br>
+                            対物レンズの倍率は、<strong>10× (黄)</strong>に設定する。
                         </div>
                     </li>
                     <li>
                         <span class="step-txt">焦点調整</span>
                         <div class="step-sub">
-                            右側の小さいダイヤルを回し、目盛りを <strong>+150 µm</strong> に設定。<br>
+                            右側のダイヤルを回し、電極に焦点を合わせる。<br>
+                            ただし、電極上のアガロースを溶かす場合は、目盛りを <strong>+150 µm</strong> に設定してから。<br>
                             （1周 100 µm → 1.5周回す）<br>
                             ※電極破壊防止のため焦点をずらす。RasPi使用時は自動調整されるが確認推奨。
                         </div>
@@ -615,7 +614,7 @@
                 <div class="recipe-subtitle">A. 手動の場合</div>
                 <ol class="step-list">
                     <li>
-                        <span class="step-txt">ドライバー設定</span>
+                        <span class="step-txt">レーザーパワーの設定</span>
                         <div class="step-sub">
                             Selectボタンで「A → W」に変更。<br>
                             目的のワット数に設定。
@@ -631,7 +630,7 @@
                     <li>
                         <span class="step-txt">終了</span>
                         <div class="step-sub">
-                            Emission OFF、出力を 0.00 W にしてから電源OFF。
+                            Emission OFF、出力を 0.00 W にしてから Laser Driver の電源をOFFにする。
                         </div>
                     </li>
                 </ol>
@@ -641,33 +640,37 @@
                     <li>
                         <span class="step-txt">接続・起動</span>
                         <div class="step-sub">
-                            XY Stage Controller: Modeを「RS-232C」に。<br>
-                            Laser DriverとUSB接続。白コードはスイッチ、黒コードはPCへ。<br>
-                            電源アダプターを挿し直し、緑・赤ライト点灯で起動確認（約 30 s）。
+                            XY Stage Controller：Modeを「RS-232C」にする。<br>
+                            Laser Driverと2本のUSBを接続。<br>
+                            白コードはスイッチ、黒コードはPCへ繋げる。<br>
+                            電源アダプターを挿し、緑・赤ライト点灯で起動を確認（約 30 s かかります）。
                         </div>
                     </li>
                     <li>
                         <span class="step-txt">IC capture設定</span>
                         <div class="step-sub">
-                            画像サイズ：Y800 (600×480)<br>
-                            ROI（デバイス）：幅48 / 高さ48<br>
-                            位置：X1 296 / Y1 216 / X2 344 / Y2 264
+                            - 画像サイズ：Y800 (600×480)<br>
+                            - ROI　　　：幅40 / 高さ40<br>
+                            - 位置　　　：X1 296 / Y1 216 / X2 344 / Y2 264<br>
+                            ※ 位置は目安です。毎度変化するので、細胞播種に影響のないDish外側でレーザーを照射し、その照射地点が中心にくるように座標を設定することを推奨します。
                         </div>
                     </li>
                     <li>
                         <span class="step-txt">Tera Term 起動</span>
                         <div class="step-sub">
-                            ホスト名：raspberrypi.local または 169.254.172.172<br>
-                            ユーザー：pi<br>
-                            パスワード：raspberry
+                            - ホスト名　：raspberrypi.local または 10.110.135.160<br>
+                            - ユーザー　：pi<br>
+                            - パスワード：raspberry
                         </div>
                     </li>
                     <li>
                         <span class="step-txt">コマンド実行</span>
                         <div class="step-sub">
-                            <code>cd (ファイル名)</code> : 移動<br>
-                            <code>amc_plt (ファイル名) -c</code> : 経路データ選択<br>
-                            四隅（upper left等）を画面枠に合わせてEnterで開始。
+                            - <code>cd (ファイル名)</code>　：移動<br>
+                            - <code>cd ../</code>　：一層上のフォルダに移動<br>
+                            - <code>amc_plt (ファイル名) -c</code> : 経路データ選択<br>
+                            - 四隅（upper left等）を画面枠に合わせてEnterで開始。<br>
+                            - 緊急時の対応　：<code>Ctrl + C</code>で停止
                         </div>
                     </li>
                     <li>
@@ -675,7 +678,7 @@
                         <div class="step-sub">
                             <code>sudo shutdown -h now</code><br>
                             Laser Driver出力 0.00 W にしてOFF。<br>
-                            Dishは滅菌水 1 ml に置換して保存。
+                            Dishは滅菌水 1 ml 入れて保存。
                         </div>
                     </li>
                 </ol>
@@ -694,10 +697,10 @@
                     </ul>
                 </div>
                 <ol class="step-list">
-                    <li><span class="step-txt">電源ON</span><div class="step-sub">ポンプと装置のスイッチON。</div></li>
-                    <li><span class="step-txt">サンプルセット・真空引き</span><div class="step-sub">READYランプ点灯後、サンプルを入れる。<br>VACUUM VALVEをOpen（赤）、PURGE VALVEをClose（青）にして真空引きを開始し、PRESSURE GAUGEが100近くまで下がるのを確認する。</div></li>
-                    <li><span class="step-txt">プラズマ照射</span><div class="step-sub">1. GASをONにする（Flow meter 100程度）。<br>2. PLASMAをONにする（紫色の光）。<br>3. <strong>20 sec</strong>（任意）照射する。</div></li>
-                    <li><span class="step-txt">終了・取り出し</span><div class="step-sub">PLASMA→GASの順にOFF。<br>VACUUMをCloseにし、PURGEを<strong>ゆっくり</strong>strong>Openにして大気圧に戻す。</div></li>
+                    <li><span class="step-txt">電源ON</span><div class="step-sub">ポンプと装置のスイッチをつける。</div></li>
+                    <li><span class="step-txt">サンプルセット・真空引き</span><div class="step-sub">サンプルを中に入れる。<br><br>VACUUM VALVEをOpen（赤）、PURGE VALVEをClose（青）にして真空引きを開始し、PRESSURE GAUGEが100近くまで下がるのを確認する。</div></li>
+                    <li><span class="step-txt">プラズマ照射</span><div class="step-sub">1. GASをONにする（Flow meter が 100 程度になることを確認）。<br><br>2. PLASMAをONにする（紫色の光）。<br><br>3. <strong>20 sec</strong>（任意）照射する。</div></li>
+                    <li><span class="step-txt">終了・取り出し</span><div class="step-sub">PLASMA→GASの順にOFF。<br>VACUUMをCloseにし、PURGEを<strong>ゆっくり</strong>Openにして大気圧に戻す。<br><br>サンプルを取り出し、ポンプと装置の電源をOFFにする。</div></li>
                 </ol>
             </div>
         </div>
@@ -708,35 +711,35 @@
                 <div class="recipe-title">コラーゲン調製・播種</div>
                 <div class="note-box">
                     <span class="note-title">原理</span>
-                    コラーゲンは酸性（pH 3）で水に溶けます。同pHの希塩酸で希釈し、使用直前にDish上で中性に戻すことでゲル化させ、細胞が接着できるようにします。
+                    コラーゲンは酸性（pH 3）の希塩酸で希釈して使用し、細胞が接着できるようにします。
                 </div>
                 <ol class="step-list">
                     <li>
                         <span class="step-txt">希釈 (1 : 9)</span>
                         <div class="step-sub">
                             エッペンチューブで混合する。<br>
-                            <strong>コラーゲン ： 希塩酸 ＝ 1 ： 9</strong><br>
+                            <strong>コラーゲン：希塩酸 ＝ 1：9</strong><br>
                             ※混ざりやすくするため、量が多い希塩酸を後から入れる。
                         </div>
                     </li>
                     <li>
                         <span class="step-txt">播種・インキュベート</span>
                         <div class="step-sub">
-                            Dish中央に真上から滴下する。<br>
-                            インキュベート：<strong>30 min 以上</strong>（目安：10 µl滴下時）
+                            Dish中央に真上から滴下し、<strong>30 min 以上</strong>インキュベート。<br>
+                            <strong>目安滴下量は、515 = 10 µl、545 = 20 µl</strong>
                         </div>
                     </li>
                     <li>
                         <span class="step-txt">乾燥・中性化</span>
                         <div class="step-sub">
                             希塩酸が揮発して乾いていることを確認。<br>
-                            PBS (-) 1 ml を加え、アスピレーターで吸ってWashする（pHを中性に戻す）。
+                            PBS (-) 1 ml を加え、アスピレーターで吸ってWashする（pHを中性に戻し、コラーゲンを繊維状態にする）。
                         </div>
                     </li>
                     <li>
                         <span class="step-txt">培地添加</span>
                         <div class="step-sub">
-                            FBSありDMEM 1 ml を加える。<br>
+                            FBSありDMEM 1 ml を加え、細胞を播種する準備をする。<br>
                             ※細胞が底面に接着しやすくするため、最初は少なめの液量にする。
                         </div>
                     </li>
@@ -747,7 +750,7 @@
         <div id="p-isolation-prep" class="page">
             <button class="back-btn" onclick="showPage('p-exp-seeding')"><i class="fa-solid fa-arrow-left"></i> 播種メニューへ戻る</button>
             <div class="section-card">
-                <div class="recipe-title">準備 (単離実験)</div>
+                <div class="recipe-title">解剖・単離の準備</div>
                 <div class="recipe-subtitle">① 機器の設定</div>
                 <ul class="menu-list">
                     <li>
@@ -760,18 +763,33 @@
 
                 <div class="recipe-subtitle">② クリーンベンチ内の準備</div>
                 <ul class="menu-list">
-                    <li>解剖機器（7種）<br>キムタオル（2枚重ねて3区画作る）<br>スターラー入り滅菌瓶<br>簡易ゴミ箱<br>15 ml チューブ 2本<br>シャーレ</li>
+                    <li>
+                        <strong>準備するもの：</strong><br>
+                        解剖機器（7種）<br>
+                        キムタオル（2枚重ねて3区画作る）<br>
+                        スターラー入り滅菌瓶<br>
+                        簡易ゴミ箱<br>
+                        15 ml チューブ 2本<br>
+                        シャーレ</li>
                     </ul>
                 <div class="step-sub">
-                    シャーレは以下の通り、準備しておくこと。
-                    <strong>3枚：</strong>strong>FBSありDMEMを 0 ml, 5 ml, 10 ml 入れる。<br>
-                    <strong>他：</strong>strong>シャーレ基板上に、使用する卵の数だけ番号を振っておく。
+                    シャーレは以下の通り、準備する。<br>
+                    <strong>3枚：</strong>FBSありDMEMを 0 ml, 5 ml, 10 ml 入れる。<br>
+                    <strong>他：</strong>シャーレ基板上に、使用する卵の数だけ番号を振っておく。
                 </div>
 
                 <div class="recipe-subtitle">③ 溶液の準備</div>
                 <ul class="menu-list">
-                    <li><strong>冷蔵：</strong>FBSありDMEM、FBSなしDMEM、PBS (-)</li>
-                    <li><strong>冷凍：</strong>コラゲナーゼ</li>
+                    <li>
+                        <strong>冷蔵：</strong><br>
+                        FBSありDMEM<br>
+                        FBSなしDMEM<br>
+                        PBS (-)
+                    </li>
+                    <li>
+                        <strong>冷凍：</strong><br>
+                        コラゲナーゼ
+                    </li>
                 </ul>
                 <div class="step-sub">
                     コラゲナーゼは、準備中にクリーンベンチ内で解凍しておく。<br>
@@ -793,14 +811,17 @@
                 <div class="warning-box">
                     <span class="warning-title">解剖時の注意</span>
                     心臓を切る際はハサミの刃を入れすぎないこと。<br>
-                    切断面の細胞は死滅して拍動しなくなるため、結果に大きく影響します。
+                    切断面の細胞は死滅して拍動しなくなるため、結果に大きく影響します。<br>
+                    また、作業に時間をかけすぎないようにしましょう。<br>
+                    時間がかかればかかるほど、拍動が弱まります。
                 </div>
 
                 <ol class="step-list">
                     <li>
                         <span class="step-txt">心臓の摘出</span>
                         <div class="step-sub">
-                            <strong>左　：</strong>解剖機器を用いて、卵から胚を取り出し、胚から心臓を摘出する。<br><br>
+                            <strong>左　：</strong>解剖機器を用いて、卵から胚を取り出し、胚から心臓を摘出する。<br>
+                            ※摘出した心臓は、中央のシャーレに入った培地の中に移しましょう。<br><br>
                             <strong>中央：</strong>心臓周辺についている組織を除去し、心臓内部に入った血液を抜く。<br><br>
                             <strong>右　：</strong>心臓を2, 3個の塊に切り刻む。ただし、刃を入れすぎないよう注意すること。
                         </div>
@@ -809,7 +830,7 @@
                         <span class="step-txt">組織の洗浄</span>
                         <div class="step-sub">
                             10 ml オートピペッターで、心臓組織の入った培地を 15 ml チューブに移す。<br><br>
-                            心臓組織が自然に沈殿するのを待ち、十分に沈殿したのを確認したら上清をアスピレーターで除去。<br><br>
+                            心臓組織が自然に沈殿するのを待ち、十分に沈殿したのを確認したら、上清をアスピレーターで吸い取る。<br><br>
                             PBS (-) 10 ml を加え、再度組織片が自然に沈殿を待ってから上清を吸う。<br><br>
                             PBS (-) 5 ml を加え、再度組織片が自然に沈殿するのを待つ。<br>
                             ※ここでは、上清を除去しない。
@@ -818,54 +839,80 @@
                     <li>
                         <span class="step-txt">コラゲナーゼ処理 (1回目)</span>
                         <div class="step-sub">
-                            PBS (-) 5 ml はなるべく吸わないよう注意しながら、組織片のみを滅菌瓶に移す。<br>
+                            <strong>コラゲナーゼ処理（1回目）の目的：</strong> <br>
+                            心臓周辺の冠動脈の除去。<br><br>
+                            PBS (-) 5 ml はなるべく吸わないよう注意しながら、組織片のみを滅菌瓶に移す。<br><br>
                             ※ただし、乾いているとオートピペッターで吸えないので、ほんの少しだけ先端にPBS (-)を入れてから、組織片を吸うようにするのがコツ。<br><br>
-                            オートピペッターを付け替えることなく、希釈したコラゲナーゼ 10 ml 全量を滅菌瓶に入れる。<br><br>
+                            オートピペッターは付け替えずにそのまま使って、希釈したコラゲナーゼ 10 ml 全量を滅菌瓶に入れる。<br><br>
                             ウォーターバス内で <strong>37 ℃, 10 min</strong> 撹拌する。<br>
-                            ※このとき、スターラーは細胞懸濁液が泡立たない程度のスピードで回転させる。<br><br>
-                            <strong>コラゲナーゼ処理（1回目）の目的：</strong> 心臓周辺の冠動脈の除去。
+                            ※スターラーは細胞懸濁液が泡立たない程度のスピードで回転させる。<br>
                         </div>
                     </li>
                     <li>
                         <span class="step-txt">コラゲナーゼ処理 (2回目)</span>
                         <div class="step-sub">
+                            <strong>コラゲナーゼ処理（2回目）の目的：</strong> <br>
+                            組織内部への酵素浸透。<br><br>
                             5 ml オートピペッターで上清（不要な組織片）を除く。<br><br>
-                            新しいコラゲナーゼ 10 ml を加え、ピペッティングを2回だけして軽く組織を崩してから、<strong>37 ℃, 20 min</strong> 撹拌する。<br>
-                            目的：組織内部への酵素浸透。
+                            新しいコラゲナーゼ 10 ml を加え、2回だけピペッティングして軽く組織を崩してから、<strong>37 ℃, 20 min</strong> 撹拌する。<br>
+                            ※このときはオートピペッターを使っても、直接入れるでも良い。
                         </div>
                     </li>
                     <li>
                         <span class="step-txt">遠心分離</span>
                         <div class="step-sub">
-                            セルストレーナーでろ過し、FBSなしDMEMを加えて総量 35 ml にする。<br>
-                            <strong>20 ℃, 1000 rpm, 5 min</strong> で遠心。<br>
-                            （細胞は沈殿、赤血球などは上清へ）
+                            50 ml チューブにセルストレーナーをセットし、攪拌後の細胞懸濁液を通す。<br><br>
+                            FBSなしDMEMを加えて総量 35 ml の細胞懸濁液にする。<br><br>
+                            <strong>1000 rpm, 5 min</strong> で遠心。
                         </div>
                     </li>
                     <li>
-                        <span class="step-txt">プレプレーティング（線維芽細胞除去）</span>
+                        <span class="step-txt">線維芽細胞の除去</span>
                         <div class="step-sub">
-                            沈殿（ペレット）をFBSありDMEMで懸濁し、コルベン（フラスコ）に入れる。<br>
-                            <strong>37 ℃ (CO2 5 %) で 18 min</strong> インキュベート。<br>
-                            ※足の速い線維芽細胞だけが壁面に張り付き、心筋細胞は浮遊したまま残る。
+                            上清をアスピレーターで吸い取る。<br><br>
+                            沈殿（ペレット）をFBSありDMEMで懸濁し、コルベン（フラスコ）に入れる。<br><br>
+                            ※FBSありDMEMは、5 ml × コルベン枚数分だけ追加する。<br><br>
+                            位相差顕微鏡にセットして、十分に細胞数があることを確認する（吹雪のような状態だったらOK）<br><br>
+                            <strong>37 ℃ で 20 min</strong> インキュベート。
                         </div>
                         <div class="note-box">
                             <span class="note-title">CO2インキュベーターの役割</span>
-                            庫内を CO2 5 % に保つことで培地中の炭酸イオン濃度を維持し、pHを一定に保ちます。
+                            庫内を CO2 5 % に保つことで培地中の炭酸イオン濃度を維持し、pHを一定に保つ。
+                        </div>
+                        <div class="note-box">
+                            <span class="note-title">コルベン処理の効果</span>
+                            接着能の高い線維芽細胞だけがコルベン底面に張り付き、接着能の低い心筋細胞は浮遊したまま残る。<br>
+                            ただし、長時間インキュベートしすぎると、良質な心筋細胞まで貼りついてしまうので注意。
                         </div>
                     </li>
                     <li>
                         <span class="step-txt">心筋細胞の回収</span>
                         <div class="step-sub">
-                            浮遊している心筋細胞を回収し、FBSなしDMEMでコルベン表面を洗って全回収する。<br>
-                            再度、<strong>20 ℃, 1000 rpm, 5 min</strong> で遠心。
+                            顕微鏡をのぞき、線維芽細胞の仮足が伸び始めていることを確認する。<br>
+                            ただし、ここの張り付き具合が十分か否かは、経験数の多い学生に判断してもらうこと。<br><br>
+                            50 ml チューブにFBSなしDMEMを、総量 35 ml になるように入れる。<br>
+                            例）コルベン2枚の場合、コルベン内の細胞懸濁液が 10 ml になるはずなので、FBSなしDMEM 25 ml をチューブに入れる。<br><br>
+                            浮遊している心筋細胞を含んだ細胞懸濁液をコルベンから回収する。<br><br>
+                            チューブに移したFBSなしDMEMで、コルベン表面をウォッシュして、細胞を全て回収する。<br>
+                            ウォッシュは10回以上、念入りに行うこと。<br><br>
+                            再度、<strong>1000 rpm, 5 min</strong> で遠心。
                         </div>
                     </li>
                     <li>
                         <span class="step-txt">カウント・播種</span>
                         <div class="step-sub">
-                            トリパンブルーで染色し、血球計算盤で細胞数をカウント。<br>
-                            希釈倍率を考慮して、目的の濃度（例: 1×10^7 cells/ml）になるよう培地量を調整し、Dishに播種する。
+                            ペレットが十分にあることを確認したのち、上清のみアスピレーターで除去する。<br><br>
+                            FBSありDMEM 100 µl をチューブに入れる。<br>
+                            <strong>※チェックポイント：</strong><br>細胞数に応じて 100 µl 以上入れる場合もあるため、経験数の多い学生に確認をとること。<br><br>
+                            そうして作製した細胞懸濁液から 10 µl だけ、エッペンチューブに移す。<br><br>
+                            エッペンチューブにFBSありDMEMを 90 µl 入れて、10倍希釈する。<br>
+                            <strong>※チェックポイント：</strong><br>ここも細胞数に応じて希釈倍率が変化するため、経験数の多い学生に確認をとること。<br><br>
+                            新たな別のエッペンチューブに、先ほど希釈した懸濁液 10 µl を移す。<br><br>
+                            そこにトリパンブルー 10 µl を入れ、2倍希釈する。<br><br>
+                            トリパンブルーで染色した細胞懸濁液を 10 µl だけとって、血球計算盤にいれ、細胞数をカウントする。<br><br>
+                            <strong>※細胞数の計算方法：</strong><br>血球計算盤上の4区画の平均細胞数 × 希釈倍率（例：20倍） × 10^4（個）<br><br>
+                            目的の濃度（例: 1×10^7 cells/ml）になるよう細胞懸濁液を調製し、Dishに播種する。<br>
+                            <strong>※チェックポイント：</strong><br>ここも慣れるまでは、経験数の多い学生に確認をとること。
                         </div>
                     </li>
                 </ol>
@@ -899,20 +946,21 @@
                         <span class="step-txt">放電 (10 s)</span>
                         <div class="step-sub">
                             10 s 流す。<br>
-                            ※1日の始めだけ、静電気を逃がす目的で行う。
+                            ※使い始めだけ、静電気を逃がす目的で行う。
                         </div>
                     </li>
                     <li>
-                        <span class="step-txt">安定化 (10 min 以上)</span>
+                        <span class="step-txt">拍動の安定化 (10 min 以上)</span>
                         <div class="step-sub">
-                            10 min 以上流す。<br>
-                            ※CO2や温度を慣らして状態を安定させる。データ保存は不要。
+                            10 min 以上、Dishをセットした状態で流す。<br>
+                            ※CO2や温度を慣らして、細胞の拍動状態を安定させる。データ保存は不要。
                         </div>
                     </li>
                     <li>
                         <span class="step-txt">計測・保存 (2 min)</span>
                         <div class="step-sub">
-                            2 min 保存する。
+                            2 min 保存する。<br>
+                            ここの条件は実験条件によって異なりますが、初心者は 2 min 保存しておけば、先行研究と比較できる十分な解析用データを得られるので、まずこの計測条件でいきましょう。
                         </div>
                     </li>
                 </ol>
@@ -951,29 +999,31 @@
         <div id="p-trypsin-mea" class="page">
             <button class="back-btn" onclick="showPage('p-exp-cleanup')"><i class="fa-solid fa-arrow-left"></i> 片付けメニューへ戻る</button>
             <div class="section-card">
-                <div class="recipe-title">MEA洗浄 (トリプシン処理)</div>
+                <div class="recipe-title">トリプシン処理</div>
                 <div class="note-box">
                     <span class="note-title">重要</span>
-                    PBSでの洗浄をサボると、カドヘリン（細胞接着因子）が除去できず、細胞が綺麗に剥がれません。
+                    PBS (-)およびトリプシンでの処理をサボると、カドヘリン（細胞接着因子）が除去できず、細胞が綺麗に剥がれません。
                 </div>
                 <ol class="step-list">
                     <li>
-                        <span class="step-txt">PBS Wash (2回)</span>
+                        <span class="step-txt">PBS Wash（2回）</span>
                         <div class="step-sub">
-                            培地を吸い、PBS (-) 1 ml を入れて吸う。これを<strong>2回</strong>繰り返す。
+                            培地をアスピレーターで除去し、PBS (-) 1 ml を入れて、再度アスピレーターで除去。<br>
+                            これを <strong>2回</strong> 繰り返す。
                         </div>
                     </li>
                     <li>
                         <span class="step-txt">トリプシン処理</span>
                         <div class="step-sub">
-                            トリプシン 500 µl を加え、<strong>10 min 以上</strong>放置する。
+                            プラカップに入れた水道水で解凍したトリプシン 500 µl を加え、<strong>10 min 以上</strong>インキュベーター内に放置する。
                         </div>
                     </li>
                     <li>
-                        <span class="step-txt">お湯洗い・乾燥</span>
+                        <span class="step-txt">湯煎・乾燥</span>
                         <div class="step-sub">
-                            細胞が剥がれていることを確認し、お湯（MilliQで作製）で電極に触れないよう洗う。<br>
-                            アスピレーターで水滴を完全に吸い取り、引き出しで保存。
+                            細胞が剥がれていることを確認し、アスピレーターでトリプシン溶液を除去する。<br>
+                            お湯（DWで作製）でDishを洗う。<br>
+                            時間がある場合はクリーンベンチ内で乾燥、時間がない場合はアスピレーターで水滴を完全に吸い取り、引き出し又は冷蔵庫内で保存する。
                         </div>
                     </li>
                 </ol>
@@ -985,7 +1035,7 @@
             <div class="section-card">
                 <div class="recipe-title">機器・器具の洗浄</div>
                 
-                <div class="recipe-subtitle">① 孵卵器 (残数0個時)</div>
+                <div class="recipe-subtitle">① 孵卵器 (残数が0個になったら対応する)</div>
                 <div class="step-sub">
                     グレーのトレー、下のスポンジ、仕切り3枚を取り出し、コンタミノンで洗う。
                 </div>
@@ -993,18 +1043,21 @@
                 <div class="recipe-subtitle">② 解剖機器</div>
                 <div class="step-sub">
                     1. コンタミノンで洗い、DWで流す。<br>
-                    2. ソニケーターに入れ、STARTボタンを押す（ハサミは全開にする）。<br>
+                    2. ソニケーターに入れ、STARTボタンを押す（ただし、ハサミは全開にして入れること）。<br>
                     3. 30 min 後、DWで流して乾燥させる。
                 </div>
 
                 <div class="recipe-subtitle">③ ソニケーター</div>
                 <div class="step-sub">
-                    洗浄液を捨て、MilliQで壁面を2回洗う。キムタオルで拭く。
+                    透明バケツを使って洗浄液を捨て、MilliQで壁面を2回洗う。<br>
+                    最後はキムタオルで拭く。<br>
+                    蓋は洗う必要がないが、中にある すのこ はDWで洗い流した後、乾かす。
                 </div>
 
                 <div class="recipe-subtitle">④ ウォーターバス</div>
                 <div class="step-sub">
-                    電源OFF、コンセントを抜き、水をすべて捨てる。
+                    電源を切り、コンセントを抜き、水をすべて捨てる。<br>
+                    スターラー台は乾燥棚に置いて乾かす。
                 </div>
             </div>
         </div>
@@ -1230,6 +1283,7 @@
 
 </body>
 </html>
+
 
 
 
